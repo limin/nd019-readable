@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {BrowserRouter,Route, Link} from 'react-router-dom'
 import logo from '../logo.svg';
 import '../App.css';
 
@@ -23,24 +24,44 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="top-bar">
-      		<span className="logo">
-          		<img src={logo} className="App-logo" alt="logo" />
-      		</span>
-      		<ul className="nav-bar">
-      			<li><a>Posts</a></li>
-      			<li><a>Categories</a></li>
-      		</ul>
+      <BrowserRouter>
+        <div className="app">
+          <div className="top-bar">
+        		<span className="logo">
+            		<img src={logo} alt="logo" />
+        		</span>
+        		<ul className="nav-bar">
+        			<li><Link to="/posts">Posts</Link></li>
+        			<li><Link to="/categories">Categories</Link></li>
+        		</ul>
+          </div>
+          <div className="content">
+          <Route path="/posts/(categories)?/:category?" render={({ match })=>
+            <div>
+              <div>posts:{match.params.category}</div>
+              <ul>
+                <li>
+                  <Link to="/posts/123456">my post</Link>
+                </li>
+              </ul>
+            </div>
+          }/>
+          <Route path="/posts/:id" render={({match})=>
+            <div>
+            {match.params.postId}
+            </div>
+          }/>
+          <Route exact path="/categories" render={()=>
+            <ul className="categories">
+              <li><Link to="/posts/categories/javascript">javascript</Link></li>
+              <li><Link to="/posts/categories/java">java</Link></li>
+              <li><Link to="/posts/categories/python">python</Link></li>
+            </ul>
+          }/>
+          </div>
+          <div className="bottom-bar"></div>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Talking to the backend yields these categories: <br/>
-          {this.state.backend}
-        </p>
-      </div>
+      </BrowserRouter>
     );
   }
 }
