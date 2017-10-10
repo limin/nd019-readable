@@ -7,7 +7,27 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      backend: 'backend-data'
+      categories:[{name:"java",path:"java"},{name:"javascript",path:"javascript"},{name:"python",path:"python"}],
+      posts:[{
+          id: '8xf0y6ziyjabvozdd253nd',
+          timestamp: 1467166872634,
+          title: 'Udacity is the best place to learn React',
+          body: 'Everyone says so after all.',
+          author: 'thingtwo',
+          category: 'react',
+          voteScore: 6,
+          deleted: false
+        },
+        {
+          id: '6ni6ok3ym7mf1p33lnez',
+          timestamp: 1468479767190,
+          title: 'Learn Redux in 10 minutes!',
+          body: 'Just kidding. It takes more than 10 minutes to learn technology.',
+          author: 'thingone',
+          category: 'redux',
+          voteScore: -5,
+          deleted: false
+        }]
     }
   }
 
@@ -36,26 +56,37 @@ class App extends Component {
         		</ul>
           </div>
           <div className="content">
-          <Route path="/posts/(categories)?/:category?" render={({ match })=>
+          <Route exact path="/posts/categories/:category" render={({ match })=>
             <div>
               <div>posts:{match.params.category}</div>
-              <ul>
-                <li>
-                  <Link to="/posts/123456">my post</Link>
-                </li>
+              <ul className="posts">
+              {
+                this.state.posts.map((post)=>(
+                  <li><Link to={"/posts/"+post.id}>{post.title}</Link></li>
+                ))
+              }
               </ul>
             </div>
           }/>
-          <Route path="/posts/:id" render={({match})=>
-            <div>
-            {match.params.postId}
+          <Route exact path="/posts/:id" render={({match})=>
+            <div className="post">
+            {
+              this.state.posts.filter((post)=>post.id===match.params.id).map((post)=>(
+              <div>
+                <div className="title">{post.title}</div>
+                <div className="body">{post.body}</div>
+              </div>
+              ))
+            }
             </div>
           }/>
           <Route exact path="/categories" render={()=>
             <ul className="categories">
-              <li><Link to="/posts/categories/javascript">javascript</Link></li>
-              <li><Link to="/posts/categories/java">java</Link></li>
-              <li><Link to="/posts/categories/python">python</Link></li>
+            {
+              this.state.categories.map((category)=>(
+                <li key={category.name}><Link to={"/posts/categories/"+category.path}>{category.name}</Link></li>
+              ))
+            }
             </ul>
           }/>
           </div>
