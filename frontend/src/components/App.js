@@ -16,7 +16,29 @@ class App extends Component {
           author: 'thingtwo',
           category: 'react',
           voteScore: 6,
-          deleted: false
+          deleted: false,
+          comments:[
+            {
+              id: '894tuq4ut84ut8v4t8wun89g',
+              parentId: "8xf0y6ziyjabvozdd253nd",
+              timestamp: 1468166872634,
+              body: 'Hi there! I am a COMMENT.',
+              author: 'thingtwo',
+              voteScore: 6,
+              deleted: false,
+              parentDeleted: false
+            },
+            {
+              id: '8tu4bsun805n8un48ve89',
+              parentId: "8xf0y6ziyjabvozdd253nd",
+              timestamp: 1469479767190,
+              body: 'Comments. Are. Cool.',
+              author: 'thingone',
+              voteScore: -5,
+              deleted: false,
+              parentDeleted: false
+            }
+          ]
         },
         {
           id: '6ni6ok3ym7mf1p33lnez',
@@ -27,7 +49,7 @@ class App extends Component {
           category: 'redux',
           voteScore: -5,
           deleted: false
-        }]
+        }],
     }
   }
 
@@ -46,16 +68,16 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="app">
-          <div className="top-bar">
+          <div className="app-top-bar">
         		<span className="logo">
             		<img src={logo} alt="logo" />
         		</span>
-        		<ul className="nav-bar">
+        		<ul className="app-nav-bar">
         			<li><Link to="/posts">Posts</Link></li>
         			<li><Link to="/categories">Categories</Link></li>
         		</ul>
           </div>
-          <div className="content">
+          <div className="app-content">
           <Route exact path="/posts/categories/:category" render={({ match })=>
             <div>
               <div>posts:{match.params.category}</div>
@@ -69,12 +91,47 @@ class App extends Component {
             </div>
           }/>
           <Route exact path="/posts/:id" render={({match})=>
-            <div className="post">
+            <div>
             {
               this.state.posts.filter((post)=>post.id===match.params.id).map((post)=>(
-              <div>
+              <div className="post">
                 <div className="title">{post.title}</div>
-                <div className="body">{post.body}</div>
+                <div className="body">
+                  <div className="vote">
+                    <div className="up button">Up</div>
+                    <div className="score">5</div>
+                    <div className="dow button">Down</div>
+                  </div>
+                  <div className="content">
+                    <div>{post.body}</div>
+                    <div className="action">
+                      <div>posted by {post.author} at {new Date(post.timestamp).toString()}.</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="comments">
+                  <div>3 comments</div>
+                  <ul className="comments">
+                  {
+                    post.comments.map((comment)=>(
+                    <li>
+                      <div className="vote">
+                        <div className="up button">Up</div>
+                        <div className="score">5</div>
+                        <div className="dow button">Down</div>
+                      </div>
+                      <div className="content">
+                        <div>{comment.body}</div>
+                        <div className="action">
+                          <div>commented by {comment.author} at {new Date(comment.timestamp).toString()}.</div>
+                        </div>
+                      </div>
+                    </li>
+                    ))
+                  }
+
+                  </ul>
+                </div>
               </div>
               ))
             }
@@ -90,7 +147,7 @@ class App extends Component {
             </ul>
           }/>
           </div>
-          <div className="bottom-bar"></div>
+          <div className="app-bottom-bar"></div>
         </div>
       </BrowserRouter>
     );

@@ -11,40 +11,42 @@
   height: 80px;
 }
 
-.top-bar {
+.app-top-bar {
   background-color: #222;
   height: 80px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-.top-bar, .content, .bottom-bar{
+, .app-content, .app-bottom-bar{
   padding-left: 12px;
   padding-right: 12px;
 }
 
-.top-bar, .top-bar a:link,.top-bar a:visited{
+.app-top-bar, .app-top-bar a:link,.app-top-bar a:visited{
   color: white;
 }
 
-.content{
+.app-content{
   padding-top: 6px;
   padding-bottom: 6px;
+  padding-left:12px;
+  padding-right:12px;
 }
 
-.nav-bar {
+.app-nav-bar {
   vertical-align: top;
   font-size: large;
   display: inline-block;
   list-style: none;
 }
 
-.nav-bar li{
+.app-nav-bar li{
   display: inline-block;
   padding: 6px;
 }
 
-.nav-bar li:hover{
+.app-nav-bar li:hover{
   background-color: grey;
 }
 
@@ -53,7 +55,53 @@
   to { transform: rotate(360deg); }
 }
 
-ul.categories{
+ul.categories, ul.posts, ul.comments{
   list-style: none;
   text-align: left;
+  margin:0;
+  padding:0;
+}
+
+.post .title, .post .body, .post .comments{
+  padding-top: 6px;
+}
+
+.post .vote, .post .content{
+  display:inline-block;
+  vertical-align: top;
+}
+
+.post .content{
+  padding:3px 6px;
+}
+
+.post .vote{
+  width: 60px;
+  text-align: center;
+}
+
+.post .vote .score{
+  padding: 3px;
+}
+
+.button{
+  padding:3px;
+  color: #FFF;
+  background-color: #5fba7d;
+  cursor: pointer;
+}
+
+.post .action{
+  color: #6a737c;
+  background-color: #E0EAF1;
+}
+
+ul.comments{
+  border-width: 1px 0px 0px;
+  border-style: solid;
+  border-color: grey;
+}
+
+ul.comments li{
+  padding:3px;
 }
