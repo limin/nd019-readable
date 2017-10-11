@@ -99,7 +99,7 @@ class App extends Component {
                 <div className="body">
                   <div className="vote">
                     <div className="up button">Up</div>
-                    <div className="score">5</div>
+                    <div className="score">{post.voteScore}</div>
                     <div className="dow button">Down</div>
                   </div>
                   <div className="content">
@@ -117,7 +117,7 @@ class App extends Component {
                     <li>
                       <div className="vote">
                         <div className="up button">Up</div>
-                        <div className="score">5</div>
+                        <div className="score">{comment.voteScore}</div>
                         <div className="dow button">Down</div>
                       </div>
                       <div className="content">
