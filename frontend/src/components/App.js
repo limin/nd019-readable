@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import {BrowserRouter,Route, Link} from 'react-router-dom'
+import CategoryList from '../components/CategoryList'
+import PostList from '../components/PostList'
+import Post from '../components/Post'
 import logo from '../logo.svg';
 import '../App.css';
 
@@ -81,70 +84,14 @@ class App extends Component {
           <Route exact path="/posts/categories/:category" render={({ match })=>
             <div>
               <div>posts:{match.params.category}</div>
-              <ul className="posts">
-              {
-                this.state.posts.map((post)=>(
-                  <li><Link to={"/posts/"+post.id}>{post.title}</Link></li>
-                ))
-              }
-              </ul>
+              <PostList posts={this.state.posts}/>
             </div>
           }/>
           <Route exact path="/posts/:id" render={({match})=>
-            <div>
-            {
-              this.state.posts.filter((post)=>post.id===match.params.id).map((post)=>(
-              <div className="post">
-                <div className="title">{post.title}</div>
-                <div className="body">
-                  <div className="vote">
-                    <div className="up button">Up</div>
-                    <div className="score">{post.voteScore}</div>
-                    <div className="dow button">Down</div>
-                  </div>
-                  <div className="content">
-                    <div>{post.body}</div>
-                    <div className="action">
-                      <div>posted by {post.author} at {new Date(post.timestamp).toString()}.</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="comments">
-                  <div>3 comments</div>
-                  <ul className="comments">
-                  {
-                    post.comments.map((comment)=>(
-                    <li>
-                      <div className="vote">
-                        <div className="up button">Up</div>
-                        <div className="score">{comment.voteScore}</div>
-                        <div className="dow button">Down</div>
-                      </div>
-                      <div className="content">
-                        <div>{comment.body}</div>
-                        <div className="action">
-                          <div>commented by {comment.author} at {new Date(comment.timestamp).toString()}.</div>
-                        </div>
-                      </div>
-                    </li>
-                    ))
-                  }
-
-                  </ul>
-                </div>
-              </div>
-              ))
-            }
-            </div>
+            <Post post={this.state.posts.filter((post)=>post.id===match.params.id)[0]}/>
           }/>
           <Route exact path="/categories" render={()=>
-            <ul className="categories">
-            {
-              this.state.categories.map((category)=>(
-                <li key={category.name}><Link to={"/posts/categories/"+category.path}>{category.name}</Link></li>
-              ))
-            }
-            </ul>
+            <CategoryList categories={this.state.categories}/>
           }/>
           </div>
           <div className="app-bottom-bar"></div>
