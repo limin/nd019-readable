@@ -6,6 +6,8 @@ export const DELETE_POST='DELETE_POST'
 export const DELETE_COMMENT='DELETE_COMMENT'
 export const UP_VOTE_POST='UP_VOTE_POST'
 export const DOWN_VOTE_POST='DOWN_VOTE_POST'
+export const UP_VOTE_COMMENT='UP_VOTE_COMMENT'
+export const DOWN_VOTE_COMMENT='DOWN_VOTE_COMMENT'
 
 export function addPost({id,title,body,author,category,timestamp}){
   return {
@@ -81,9 +83,23 @@ export function upVotePost({id}){
   }
 }
 
-export function downVotePost({id}}){
+export function downVotePost({id}){
   return{
     type:DOWN_VOTE_POST,
+    id,
+  }
+}
+
+export function upVoteComment({id}){
+  return{
+    type:UP_VOTE_COMMENT,
+    id,
+  }
+}
+
+export function downVoteComment({id}){
+  return{
+    type:DOWN_VOTE_COMMENT,
     id,
   }
 }

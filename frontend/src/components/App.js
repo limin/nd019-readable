@@ -101,4 +101,11 @@ class App extends Component {
   }
 }
 
+function mapStateToProps({categories,posts, comments}){
+  return {
+    categories,
+    posts:posts
+  }
+}
+
 export default App;
