@@ -14,8 +14,7 @@ import {
 } from '../actions'
 
 
-const initialState={
-  categories:{
+const initialCategories={
     java:{
       name: 'java',
       path: 'java'
@@ -28,8 +27,8 @@ const initialState={
       name: 'python',
       path: 'python'
     }
-  },
-  posts:{
+  }
+  const initialPosts={
     "8xf0y6ziyjabvozdd253nd": {
       id: '8xf0y6ziyjabvozdd253nd',
       timestamp: 1467166872634,
@@ -50,8 +49,8 @@ const initialState={
       voteScore: -5,
       deleted: false
     }
-  },
-  comments:{
+  }
+  const initialComments={
     "894tuq4ut84ut8v4t8wun89g": {
       id: '894tuq4ut84ut8v4t8wun89g',
       parentId: "8xf0y6ziyjabvozdd253nd",
@@ -72,20 +71,20 @@ const initialState={
       deleted: false,
       parentDeleted: false
     }
-  },
+  }
+
+function categories(state=initialCategories,action){
+  return state
 }
 
-
-function post(state=initialState,action){
+function posts(state=initialPosts,action){
   switch(action.type){
     case ADD_POST:{
       let {id}=action.post;
       return {
         ...state,
-        posts:{
-          [id]:{
-            ...action.post
-          }
+        [id]:{
+          ...action.post
         }
       }
     }
@@ -93,11 +92,9 @@ function post(state=initialState,action){
       let {id}=action.post;
       return {
         ...state,
-        posts:{
-          [id]:{
-            ...state.posts[id],
-            ...action.post,
-          }
+        [id]:{
+          ...state[id],
+          ...action.post,
         }
       }
     }
@@ -105,72 +102,19 @@ function post(state=initialState,action){
       let {id}=action.post;
       return {
         ...state,
-        posts:{
-          [id]:{
-            ...state.posts[id],
-            deleted:true
-          }
-        }
-      }
-    }
-    default:
-      return state
-  }
-}
-
-function comment(state=initialState,action){
-  switch(action.type){
-    case ADD_COMMENT:{
-      let {id}=action.comment;
-      return {
-        ...state,
-        comments:{
-          [id]:{
-            ...action.comment
-          }
-        }
-      }
-    }
-  case UPDATE_COMMENT:{
-    let {id}=action.comment;
-    return {
-      ...state,
-      posts:{
         [id]:{
-          ...state.comments[id],
-          ...action.comment,
-        }
-      }
-    }
-  }
-  case DELETE_COMMENT:{
-    let {id}=action.comment;
-    return {
-      ...state,
-      posts:{
-        [id]:{
-          ...state.comments[id],
+          ...state[id],
           deleted:true
         }
       }
     }
-  }
-  default:
-    return state
-  }
-}
-
-function vote(state=initialState,action){
-  switch(action.type){
     case UP_VOTE_POST:{
       let {id}=action.id
       return {
         ...state,
-        posts:{
-          [id]:{
-            ...state.posts[id],
-            voteScore:state.posts[id].voteScore+1
-          }
+        [id]:{
+          ...state[id],
+          voteScore:state[id].voteScore+1
         }
       }
     }
@@ -178,23 +122,55 @@ function vote(state=initialState,action){
       let {id}=action.id
       return {
         ...state,
-        posts:{
-          [id]:{
-            ...state.posts[id],
-            voteScore:state.posts[id].voteScore-1
-          }
+        [id]:{
+          ...state[id],
+          voteScore:state[id].voteScore-1
+        }
+      }
+    }      
+    default:
+      return state
+  }
+}
+
+function comments(state=initialComments,action){
+  switch(action.type){
+    case ADD_COMMENT:{
+      let {id}=action.comment;
+      return {
+        ...state,
+        [id]:{
+          ...action.comment
         }
       }
     }
+  case UPDATE_COMMENT:{
+    let {id}=action.comment;
+    return {
+      ...state,
+      [id]:{
+        ...state[id],
+        ...action.comment,
+      }
+    }
+  }
+  case DELETE_COMMENT:{
+    let {id}=action.comment;
+    return {
+      ...state,
+      [id]:{
+        ...state[id],
+        deleted:true
+      }
+    }
+  }
     case UP_VOTE_COMMENT:{
       let {id}=action.id
       return {
         ...state,
-        comments:{
-          [id]:{
-            ...state.comments[id],
-            voteScore:state.comments[id].voteScore+1
-          }
+        [id]:{
+          ...state[id],
+          voteScore:state[id].voteScore+1
         }
       }
     }
@@ -202,17 +178,15 @@ function vote(state=initialState,action){
       let {id}=action.id    
       return {
         ...state,
-        comments:{
-          [id]:{
-            ...state.comments[id],
-            voteScore:state.comments[id].voteScore-1
-          }
+        [id]:{
+          ...state.comments[id],
+          voteScore:state[id].voteScore-1
         }
       }
-    }
-    default:
-      return state
+    }    
+  default:
+    return state
   }
 }
 
-export default combineReducers({post,comment,vote,})
+export default combineReducers({categories,posts,comments,})

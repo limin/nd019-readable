@@ -17,11 +17,11 @@ class Post extends React.Component{
           </div>
         </div>
         <div className="comments">
-          <div>3 comments</div>
+          <div>{post.comments.length} comments</div>
           <ul className="comments">
           {
             post.comments.map((comment)=>(
-            <li>
+            <li key={comment.id}>
               <Vote item={comment}/>
               <div className="content">
                 <div>{comment.body}</div>
