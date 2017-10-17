@@ -9,23 +9,6 @@ import logo from '../logo.svg';
 import '../App.css';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    /*
-    const url = `${process.env.REACT_APP_BACKEND}/categories`;
-    console.log('fetching from url', url);
-    fetch(url, { headers: { 'Authorization': 'whatever-you-want' },
-                 credentials: 'include' } )
-      .then( (res) => { return(res.text()) })
-      .then((data) => {
-        this.setState({backend:data});
-      });
-      */
-  }
-
   render() {
     return (
       <BrowserRouter>
@@ -65,7 +48,7 @@ function mapStateToProps({categories,posts,comments}){
   return {
     categories:Object.values(categories),
     posts:Object.values(posts).map((post)=>{
-    return Object.assign(post,{comments:getDerivedComments({categories,posts,comments}).reduce(
+    return Object.assign(post,{comments:getDerivedComments({categories,posts,comments}).filter(
       (comment)=>comment.parentId=post.id
     )})
   })

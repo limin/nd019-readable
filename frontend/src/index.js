@@ -21,13 +21,14 @@ const rendDom=(preloadedState)=>{
 const init={ headers: { 'Authorization': 'udacity'},credentials: 'include', mode: 'cors', }
 const categoryFetcher=fetch(`${process.env.REACT_APP_BACKEND}/categories`, init)
 const postFetcher=fetch(`${process.env.REACT_APP_BACKEND}/posts`, init)
-const commentFetcher=fetch(`${process.env.REACT_APP_BACKEND}/comments`, init)
-Promise.all([categoryFetcher,postFetcher,commentFetcher]).then(responses=>{
-  Promise.all([responses[0].json(),responses[1].json(),responses[2].json()).then(values=>{
+Promise.all([categoryFetcher,postFetcher]).then(responses=>{
+  Promise.all([responses[0].json(),responses[1].json()]).then(values=>{
     let preloadedState={
-      categories:responses[0].json(),
-      posts:responses[1].json(),
-      comments:responses[2].json()
+      categories:values[0].categories,
+      posts:values[1].reduce((map,post)=>{
+        map[post.id]=post
+        return map
+      },{}),
     }
 	rendDom(preloadedState)
   })
