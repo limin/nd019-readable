@@ -1,6 +1,8 @@
 import React from 'react';
+import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger'
 import ReactDOM from 'react-dom';
-import {createStore} from 'redux'
+import {createStore,applyMiddleware } from 'redux'
 import {Provider} from 'react-redux'
 import './index.css';
 import App from './components/App';
@@ -8,7 +10,8 @@ import reducer from './reducers'
 import registerServiceWorker from './registerServiceWorker';
 
 const rendDom=(preloadedState)=>{
-    const store=createStore(reducer,preloadedState)
+  	const loggerMiddleware = createLogger()
+    const store=createStore(reducer,preloadedState,applyMiddleware(thunkMiddleware,loggerMiddleware ))
     ReactDOM.render(
       <Provider store={store}>
         <App />

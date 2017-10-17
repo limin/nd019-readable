@@ -43,7 +43,7 @@ export function fetchPost(id){
   return function(dispatch){
   	dispatch(requestPost(id))
     return fetch(`${process.env.REACT_APP_BACKEND}/posts`, { headers: { 'Authorization': 'udacity'}}).then(
-    	post=respnse.json(),
+    	response=>response.json(),
 		// Do not use catch, because that will also catch
         // any errors in the dispatch and resulting render,
         // causing an loop of 'Unexpected batch number' errors.
