@@ -7,7 +7,7 @@ class PostList extends React.Component{
       <ul className="posts">
       {
         this.props.posts.map((post)=>(
-          <li key={post.id}><Link to={"/posts/"+post.id}>{post.title}</Link></li>
+          <li key={post.id}><Link to={"/posts/"+post.id} onClick={()=>this.props.fetchPost(post.id)}>{post.title}</Link></li>
         ))
       }
       </ul>

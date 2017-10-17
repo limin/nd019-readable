@@ -5,6 +5,7 @@ import CategoryList from '../components/CategoryList'
 import PostList from '../components/PostList'
 import Post from '../components/Post'
 import {getDerivedComments} from '../selectors'
+import {fetchPost} from '../actions'
 import logo from '../logo.svg';
 import '../App.css';
 
@@ -48,6 +49,12 @@ class App extends Component {
   }
 }
 
+function mapDispatchToProps(dispatch){
+  return {
+    fetchPost:(id)=>dispatch(fetchPost(id))
+  }
+}
+
 function mapStateToProps({categories,posts,comments}){
   
   return {
@@ -60,4 +67,4 @@ function mapStateToProps({categories,posts,comments}){
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps,mapDispatchToProps)(App);

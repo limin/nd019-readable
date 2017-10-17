@@ -1,3 +1,5 @@
+export const REQUEST_POST='REQUEST_POST'
+export const RECEIVE_POST='RECEIVE_POST'
 export const ADD_POST='ADD_POST'
 export const ADD_COMMENT='ADD_COMMENT'
 export const UPDATE_POST='UPDATE_POST'
@@ -8,6 +10,20 @@ export const UP_VOTE_POST='UP_VOTE_POST'
 export const DOWN_VOTE_POST='DOWN_VOTE_POST'
 export const UP_VOTE_COMMENT='UP_VOTE_COMMENT'
 export const DOWN_VOTE_COMMENT='DOWN_VOTE_COMMENT'
+
+export function requestPost(id){
+	return {
+      type: REQUEST_POST,
+      id
+    }
+}
+
+export function receivePost(post){
+	return {
+    	type: RECEIVE_POST,
+    	post
+    }
+}
 
 export function addPost({id,title,body,author,category,timestamp}){
   return {
@@ -21,6 +37,20 @@ export function addPost({id,title,body,author,category,timestamp}){
         timestamp,
       }
     }
+}
+
+export function fetchPost(id){
+  return function(dispatch){
+  	dispatch(requestPost(id))
+    return fetch(`${process.env.REACT_APP_BACKEND}/posts`, { headers: { 'Authorization': 'udacity'}}).then(
+    	post=respnse.json(),
+		// Do not use catch, because that will also catch
+        // any errors in the dispatch and resulting render,
+        // causing an loop of 'Unexpected batch number' errors.
+        // https://github.com/facebook/react/issues/6895
+        error => console.log('An error occured.', error)      
+    ).then(post=>dispatch(receivePost(post)))
+  }
 }
 
 export function updatePost(post){
