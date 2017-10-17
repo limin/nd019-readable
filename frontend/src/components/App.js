@@ -23,6 +23,11 @@ class App extends Component {
         		</ul>
           </div>
           <div className="app-content">
+          <Route exact path="/(posts)?" render={({ match })=>
+            <div>
+              <PostList posts={this.props.posts}/>
+            </div>
+          }/>      
           <Route exact path="/posts/categories/:category" render={({ match })=>
             <div>
               <div>posts:{match.params.category}</div>
