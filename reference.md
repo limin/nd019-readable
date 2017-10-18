@@ -1,1 +1,3 @@
-[Where to Fetch Data: componentWillMount vs componentDidMount](https://daveceddia.com/where-fetch-data-componentwillmount-vs-componentdidmount/)
+- [Where to Fetch Data: componentWillMount vs componentDidMount](https://daveceddia.com/where-fetch-data-componentwillmount-vs-componentdidmount/)
+- [Async Action](https://github.com/reactjs/redux/blob/master/docs/advanced/AsyncActions.md)
+- [Redux: Dispatching Actions Asynchronously with Thunks](https://egghead.io/lessons/javascript-redux-dispatching-actions-asynchronously-with-thunks)
