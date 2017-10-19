@@ -9,9 +9,6 @@ class Post extends React.Component{
   }
   render(){
     let {post}=this.props
-    if(typeof post === 'undefined'){
-      post={comments:[]}
-    }
     return (
       <div className="post">
         <div className="title">{post.title}</div>
@@ -51,6 +48,7 @@ function mapStateToProps({posts,comments},{id}){
   return{
     post:Object.values(posts).filter(post=>post.id===id).map(post=>{
     	post.comments=Object.values(comments).filter(comment=>comment.parentId===post.id)
+      	return post
     })[0]
   }
 }

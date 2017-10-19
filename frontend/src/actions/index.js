@@ -1,5 +1,8 @@
+import {config} from '../config.js'
+
 export const REQUEST_POST='REQUEST_POST'
 export const RECEIVE_POSTS='RECEIVE_POSTS'
+export const RECEIVE_COMMENTS='RECEIVE_COMMENTS'
 export const ADD_POST='ADD_POST'
 export const ADD_COMMENT='ADD_COMMENT'
 export const UPDATE_POST='UPDATE_POST'
@@ -25,6 +28,13 @@ export function receivePosts(posts){
     }
 }
 
+export function receiveComments(comments){
+	return {
+    	type: RECEIVE_COMMENTS,
+    	comments
+    }
+}
+
 export function addPost({id,title,body,author,category,timestamp}){
   return {
       type: ADD_POST,
@@ -42,15 +52,14 @@ export function addPost({id,title,body,author,category,timestamp}){
 export function fetchPost(id){
   return function(dispatch){
   	dispatch(requestPost(id))
-    const init={ headers: { 'Authorization': 'udacity'},credentials: 'include', mode: 'cors', }
-    return fetch(`${process.env.REACT_APP_BACKEND}/posts/${id}`, init).then(
-    	response=>response.json(),
-		// Do not use catch, because that will also catch
-        // any errors in the dispatch and resulting render,
-        // causing an loop of 'Unexpected batch number' errors.
-        // https://github.com/facebook/react/issues/6895
-        error => console.log('An error occured.', error)
-    ).then(post=>dispatch(receivePosts([post])))
+  	const postFetcher=fetch(`${config.API_BASE_URL}/posts/${id}`, config.FETCH_INIT_PARAM)
+  	const commentsFetcher=fetch(`${config.API_BASE_URL}/posts/${id}/comments`, config.FETCH_INIT_PARAM)
+	Promise.all([postFetcher,commentsFetcher]).then(responses=>{    
+      Promise.all([responses[0].json(),responses[1].json()]).then(values=>{
+        dispatch(receivePosts([values[0]]))
+        dispatch(receiveComments(values[1]))
+      	})
+    })
   }
 }
 

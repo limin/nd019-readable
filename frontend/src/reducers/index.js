@@ -5,6 +5,7 @@ import {
   RECEIVE_POSTS,
   ADD_POST,
   ADD_COMMENT,
+  RECEIVE_COMMENTS,  
   UPDATE_POST,
   UPDATE_COMMENT,
   DELETE_POST,
@@ -145,6 +146,14 @@ function posts(state={},action){
 
 function comments(state={},action){
   switch(action.type){
+    case RECEIVE_COMMENTS:{
+      const comments=action.comments 
+      const newState=JSON.parse(JSON.stringify(state))
+      comments.forEach(comment=>{
+          newState[comment.id]=comment
+      })
+      return newState
+    }      
     case ADD_COMMENT:{
       let {id}=action.comment;
       return {
