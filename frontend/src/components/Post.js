@@ -8,7 +8,10 @@ class Post extends React.Component{
     this.props.dispatch(fetchPost(this.props.id))
   }
   render(){
-    let post=this.props.post
+    let {post}=this.props
+    if(typeof post === 'undefined'){
+      post={comments:[]}
+    }
     return (
       <div className="post">
         <div className="title">{post.title}</div>
@@ -44,9 +47,11 @@ class Post extends React.Component{
   }
 }
 
-function mapStateToProps({posts},{id}){
+function mapStateToProps({posts,comments},{id}){
   return{
-    post:Object.values(posts).filter(post=>post.id===id)[0]
+    post:Object.values(posts).filter(post=>post.id===id).map(post=>{
+    	post.comments=Object.values(comments).filter(comment=>comment.parentId===post.id)
+    })[0]
   }
 }
 export default connect(mapStateToProps)(Post)

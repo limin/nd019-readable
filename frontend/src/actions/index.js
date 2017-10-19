@@ -1,5 +1,5 @@
 export const REQUEST_POST='REQUEST_POST'
-export const RECEIVE_POST='RECEIVE_POST'
+export const RECEIVE_POSTS='RECEIVE_POSTS'
 export const ADD_POST='ADD_POST'
 export const ADD_COMMENT='ADD_COMMENT'
 export const UPDATE_POST='UPDATE_POST'
@@ -18,10 +18,10 @@ export function requestPost(id){
     }
 }
 
-export function receivePost(post){
+export function receivePosts(posts){
 	return {
-    	type: RECEIVE_POST,
-    	post
+    	type: RECEIVE_POSTS,
+    	posts
     }
 }
 
@@ -50,7 +50,7 @@ export function fetchPost(id){
         // causing an loop of 'Unexpected batch number' errors.
         // https://github.com/facebook/react/issues/6895
         error => console.log('An error occured.', error)
-    ).then(post=>dispatch(receivePost(post)))
+    ).then(post=>dispatch(receivePosts([post])))
   }
 }
 

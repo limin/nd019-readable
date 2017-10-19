@@ -2,7 +2,7 @@ import {combineReducers } from 'redux'
 
 import {
   REQUEST_POST,
-  RECEIVE_POST,
+  RECEIVE_POSTS,
   ADD_POST,
   ADD_COMMENT,
   UPDATE_POST,
@@ -81,12 +81,13 @@ function categories(state={},action){
 
 function posts(state={},action){
   switch(action.type){
-    case RECEIVE_POST:{
-      let post=action.post 
-      return {
-        ...state,
-        [post.id]:post
-      }
+    case RECEIVE_POSTS:{
+      const posts=action.posts 
+      const newState=JSON.parse(JSON.stringify(state))
+      posts.forEach(post=>{
+          newState[post.id]=post
+      })
+      return newState
     }
     case ADD_POST:{
       let {id}=action.post;
