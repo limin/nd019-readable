@@ -1,7 +1,12 @@
 import React from 'react'
+import {fetchPost} from '../actions'
+import {connect} from 'react-redux'
 import Vote from '../components/Vote'
 
 class Post extends React.Component{
+  componentDidMount(){
+    this.props.dispatch(fetchPost(this.props.id))
+  }
   render(){
     let post=this.props.post
     return (
@@ -39,4 +44,9 @@ class Post extends React.Component{
   }
 }
 
-export default Post
+function mapStateToProps({posts},{id}){
+  return{
+    post:Object.values(posts).filter(post=>post.id===id)[0]
+  }
+}
+export default connect(mapStateToProps)(Post)

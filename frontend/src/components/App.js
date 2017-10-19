@@ -1,31 +1,14 @@
 import React, { Component } from 'react';
 import {BrowserRouter,Route, Link} from 'react-router-dom'
-import {connect} from 'react-redux'
+
 import CategoryList from '../components/CategoryList'
 import PostList from '../components/PostList'
 import Post from '../components/Post'
-import {getDerivedComments} from '../selectors'
+
 import logo from '../logo.svg';
 import '../App.css';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    /*
-    const url = `${process.env.REACT_APP_BACKEND}/categories`;
-    console.log('fetching from url', url);
-    fetch(url, { headers: { 'Authorization': 'whatever-you-want' },
-                 credentials: 'include' } )
-      .then( (res) => { return(res.text()) })
-      .then((data) => {
-        this.setState({backend:data});
-      });
-      */
-  }
-
   render() {
     return (
       <BrowserRouter>
@@ -40,17 +23,22 @@ class App extends Component {
         		</ul>
           </div>
           <div className="app-content">
+          <Route exact path="/(posts)?" render={({ match })=>
+            <div>
+              <PostList/>
+            </div>
+          }/>      
           <Route exact path="/posts/categories/:category" render={({ match })=>
             <div>
               <div>posts:{match.params.category}</div>
-              <PostList posts={this.props.posts}/>
+              <PostList/>
             </div>
           }/>
           <Route exact path="/posts/:id" render={({match})=>
-            <Post post={this.props.posts.filter((post)=>post.id===match.params.id)[0]}/>
+            <Post id={match.params.id}/>
           }/>
           <Route exact path="/categories" render={()=>
-            <CategoryList categories={this.props.categories}/>
+            <CategoryList/>
           }/>
           </div>
           <div className="app-bottom-bar"></div>
@@ -60,16 +48,4 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({categories,posts,comments}){
-  
-  return {
-    categories:Object.values(categories),
-    posts:Object.values(posts).map((post)=>{
-    return Object.assign(post,{comments:getDerivedComments({categories,posts,comments}).reduce(
-      (comment)=>comment.parentId=post.id
-    )})
-  })
-  }
-}
-
-export default connect(mapStateToProps)(App);
+export default App;
