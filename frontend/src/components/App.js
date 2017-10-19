@@ -19,7 +19,7 @@ class App extends Component {
         		<ul className="app-nav-bar">
         			<li><Link to="/posts">Posts</Link></li>
         			<li><Link to="/categories">Categories</Link></li>
-      				<li><Link to="/posts/add">Add Post</Link></li>
+      				<li><Link to="/add/post">Add Post</Link></li>
         		</ul>
           </div>
           <div className="app-content">
@@ -34,9 +34,19 @@ class App extends Component {
               <PostList/>
             </div>
           }/>
+
+		  <Route exact path="/add/post" render={()=>
+			<div></div>                                                 
+		  }/>
+
           <Route exact path="/posts/:id" render={({match})=>
             <Post id={match.params.id}/>
           }/>
+
+		  <Route exact path="/posts/:id/comments/add" render={({match})=>
+			<div>{match.params.id}</div>
+		  }/>
+
           <Route exact path="/categories" render={()=>
             <CategoryList/>
           }/>

@@ -23,7 +23,7 @@ class Post extends React.Component{
           </div>
         </div>
         <div className="comments">
-          <div>{post.comments.length} comments</div>
+          <div>{post.comments.length} comments. <Link to={"/posts/"+post.id+"/add/comments"}>Add Comment</Link></div>
           <ul className="comments">
           {
             post.comments.map((comment)=>(
