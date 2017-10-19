@@ -49,7 +49,7 @@ export function fetchPost(id){
         // any errors in the dispatch and resulting render,
         // causing an loop of 'Unexpected batch number' errors.
         // https://github.com/facebook/react/issues/6895
-        error => console.log('An error occured.', error)      
+        error => console.log('An error occured.', error)
     ).then(post=>dispatch(receivePost(post)))
   }
 }

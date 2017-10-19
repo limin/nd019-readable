@@ -23,6 +23,7 @@ const rendDom=(preloadedState)=>{
 
 const categoryFetcher=fetch(`${config.API_BASE_URL}/categories`, config.FETCH_INIT_PARAM)
 const postFetcher=fetch(`${config.API_BASE_URL}/posts`, config.FETCH_INIT_PARAM)
+
 Promise.all([categoryFetcher,postFetcher]).then(responses=>{
   Promise.all([responses[0].json(),responses[1].json()]).then(values=>{
     let preloadedState={

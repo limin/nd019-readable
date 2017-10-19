@@ -4,7 +4,6 @@ import {BrowserRouter,Route, Link} from 'react-router-dom'
 import CategoryList from '../components/CategoryList'
 import PostList from '../components/PostList'
 import Post from '../components/Post'
-
 import logo from '../logo.svg';
 import '../App.css';
 
@@ -27,7 +26,7 @@ class App extends Component {
             <div>
               <PostList/>
             </div>
-          }/>      
+          }/>
           <Route exact path="/posts/categories/:category" render={({ match })=>
             <div>
               <div>posts:{match.params.category}</div>
