@@ -8,7 +8,7 @@ class CategoryList extends React.Component{
       <ul className="categories">
       {
         this.props.categories.map((category)=>(
-          <li key={category.name}><Link to={"/posts/categories/"+category.path} onClick={()=>this.prop.selectCategory(category.path)}>{category.name}</Link></li>
+          <li key={category.name}><Link to={"/posts/categories/"+category.path}>{category.name}</Link></li>
         ))
       }
       </ul>

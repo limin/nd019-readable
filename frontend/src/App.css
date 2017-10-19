@@ -75,6 +75,10 @@ ul.categories, ul.posts, ul.comments{
   padding:3px 6px;
 }
 
+.post .category{
+  background-color: #E1ECF4
+}
+
 .post .vote{
   width: 60px;
   text-align: center;
@@ -94,6 +98,7 @@ ul.categories, ul.posts, ul.comments{
 .post .action{
   color: #6a737c;
   background-color: #E0EAF1;
+  font-size: small;
 }
 
 ul.comments{
