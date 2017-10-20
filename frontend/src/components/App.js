@@ -4,6 +4,7 @@ import {BrowserRouter,Route, Link} from 'react-router-dom'
 import CategoryList from '../components/CategoryList'
 import PostList from '../components/PostList'
 import Post from '../components/Post'
+import AddPost from '../components/AddPost'
 import logo from '../logo.svg';
 import '../App.css';
 
@@ -36,7 +37,7 @@ class App extends Component {
           }/>
 
 		  <Route exact path="/add/post" render={()=>
-			<div></div>                                                 
+			<AddPost/>                                                 
 		  }/>
 
           <Route exact path="/posts/:id" render={({match})=>
