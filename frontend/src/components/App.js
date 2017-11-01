@@ -5,6 +5,8 @@ import CategoryList from '../components/CategoryList'
 import PostList from '../components/PostList'
 import Post from '../components/Post'
 import AddPost from '../components/AddPost'
+import UpdatePost from '../components/UpdatePost'
+import DeletePost from '../components/DeletePost'
 import logo from '../logo.svg';
 import '../App.css';
 
@@ -32,17 +34,25 @@ class App extends Component {
           <Route exact path="/posts/categories/:category" render={({ match })=>
             <div>
               <div>posts:{match.params.category}</div>
-              <PostList/>
+              <PostList category={match.params.category}/>
             </div>
           }/>
 
 		  <Route exact path="/add/post" render={()=>
-			<AddPost/>                                                 
+			<AddPost/>
 		  }/>
 
-          <Route exact path="/posts/:id" render={({match})=>
-            <Post id={match.params.id}/>
-          }/>
+      <Route exact path="/update/post/:id" render={({match})=>
+        <UpdatePost id={match.params.id}/>
+      }/>
+
+      <Route exact path="/delete/post/:id" render={({match})=>
+        <DeletePost id={match.params.id}/>
+      }/>
+
+      <Route exact path="/posts/:id" render={({match})=>
+        <Post id={match.params.id}/>
+      }/>
 
 		  <Route exact path="/posts/:id/comments/add" render={({match})=>
 			<div>{match.params.id}</div>

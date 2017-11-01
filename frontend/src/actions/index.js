@@ -1,31 +1,29 @@
-import {config} from '../config.js'
+import * as API from '../utils/Api'
 
-export const REQUEST_POST='REQUEST_POST'
 export const RECEIVE_POSTS='RECEIVE_POSTS'
+export const POST_DELETED='POST_DELETED'
 export const RECEIVE_COMMENTS='RECEIVE_COMMENTS'
-export const ADD_POST='ADD_POST'
 export const ADD_COMMENT='ADD_COMMENT'
-export const UPDATE_POST='UPDATE_POST'
 export const UPDATE_COMMENT='UPDATE_COMMENT'
-export const DELETE_POST='DELETE_POST'
 export const DELETE_COMMENT='DELETE_COMMENT'
 export const UP_VOTE_POST='UP_VOTE_POST'
 export const DOWN_VOTE_POST='DOWN_VOTE_POST'
 export const UP_VOTE_COMMENT='UP_VOTE_COMMENT'
 export const DOWN_VOTE_COMMENT='DOWN_VOTE_COMMENT'
 
-export function requestPost(id){
-	return {
-      type: REQUEST_POST,
-      id
-    }
-}
 
 export function receivePosts(posts){
 	return {
     	type: RECEIVE_POSTS,
     	posts
     }
+}
+
+export function postDeleted(id){
+	return {
+		type:POST_DELETED,
+		id
+	}
 }
 
 export function receiveComments(comments){
@@ -35,52 +33,32 @@ export function receiveComments(comments){
     }
 }
 
-export function addPost({id,title,body,author,category,timestamp}){
-  return {
-      type: ADD_POST,
-      post:{
-        id,
-        title,
-        body,
-        author,
-        category,
-        timestamp,
-      }
-    }
+export function addPost(post){
+	return function(dispatch){
+		API.createPost(post).then(post=>dispatch(receivePosts([post])))
+	}
 }
 
 export function fetchPost(id){
   return function(dispatch){
-  	dispatch(requestPost(id))
-  	const postFetcher=fetch(`${config.API_BASE_URL}/posts/${id}`, config.FETCH_INIT_PARAM)
-  	const commentsFetcher=fetch(`${config.API_BASE_URL}/posts/${id}/comments`, config.FETCH_INIT_PARAM)
-	Promise.all([postFetcher,commentsFetcher]).then(responses=>{    
-      Promise.all([responses[0].json(),responses[1].json()]).then(values=>{
-        dispatch(receivePosts([values[0]]))
-        dispatch(receiveComments(values[1]))
-      	})
-    })
-  }
+//  	dispatch(requestPost(id))
+		API.fetchPost(id).then(values=>{
+			dispatch(receivePosts([values[0]]))
+			dispatch(receiveComments(values[1]))
+			})
+	  }
 }
 
-export function updatePost(post){
-  let {id}=post
-  return {
-    type:UPDATE_POST,
-    post:{
-      ...post,
-      id,
-    }
-  }
+export function updatePost(id,post){
+	return function(dispatch){
+		API.updatePost(id,post).then(value=>dispatch(receivePosts([value])))
+	}
 }
 
-export function deletePost({id}){
-  return {
-    type:DELETE_POST,
-    post:{
-      id,
-    }
-  }
+export function deletePost(id){
+	return function(dispatch){
+		API.deletePost(id).then(value=>dispatch(postDeleted(id)))
+	}
 }
 
 export function addComment({id,body, author,timestamp,parentId}){

@@ -10,7 +10,7 @@ class PostList extends React.Component{
       <ul className="posts">
       {
         this.props.posts.map((post)=>(
-          <li key={post.id}><Link to={"/posts/"+post.id} onClick={()=>this.props.fetchPost(post.id)}>{post.title}</Link></li>
+          <li key={post.id}><Link to={"/posts/"+post.id}>{post.title}</Link></li>
         ))
       }
       </ul>
@@ -24,12 +24,12 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-function mapStateToProps({posts,comments}){
-  
+function mapStateToProps({posts,comments},{category}){
+  const postList=category?Object.values(posts).filter((post)=>post.category===category):Object.values(posts)
   return {
-    posts:Object.values(posts).map((post)=>{
+    posts:postList.filter((post)=>post.deleted===false).map((post)=>{
     return Object.assign(post,{comments:getDerivedComments({posts,comments}).filter(
-      (comment)=>comment.parentId=post.id
+      (comment)=>comment.parentId===post.id
     )})
   })
   }

@@ -12,11 +12,11 @@ class Post extends React.Component{
     let {post}=this.props
     return (
       <div className="post">
-        <div className="title">{post.title}</div>
+        <div className="title">{post.title} <Link to={"/update/post/"+post.id}>Update</Link> <Link to={"/delete/post/"+post.id}>Delete</Link></div>
         <div className="body">
           <Vote item={post}/>
           <div className="content">
-            <div>{post.body} <Link to={"/posts/categories/"+post.category} className="category">{post.category}</Link></div>    
+            <div>{post.body} <Link to={"/posts/categories/"+post.category} className="category">{post.category}</Link></div>
             <div className="action">
               <div>posted by {post.author} at {new Date(post.timestamp).toString()}.</div>
             </div>
