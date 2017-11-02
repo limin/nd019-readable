@@ -2,13 +2,15 @@ import React from 'react'
 import {connect} from 'react-redux'
 import serializeForm from 'form-serialize'
 import {updatePost,fetchPost} from '../actions'
-
+import {withRouter} from 'react-router';
 
 class UpdatePost extends React.Component{
   handleSubmit = (e) => {
     e.preventDefault()
     const values = serializeForm(e.target, { hash: true })
     this.props.updatePost(this.props.id,values)
+    //window.location.href="/"
+    this.props.history.push("/")
   }
 
   componentDidMount(){
@@ -46,4 +48,4 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(UpdatePost)
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(UpdatePost))

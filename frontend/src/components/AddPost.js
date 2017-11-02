@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import serializeForm from 'form-serialize'
 import {uniqueId} from '../utils'
 import {addPost} from '../actions'
+import {withRouter} from 'react-router';
 
 
 class AddPost extends React.Component{
@@ -13,6 +14,8 @@ class AddPost extends React.Component{
     values.timestamp=Date.now()
     values.deleted=false
     this.props.addPost(values)
+    //window.location.href="/"
+    this.props.history.push("/")
   }
   render(){
     return(
@@ -53,4 +56,4 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(AddPost)
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(AddPost))

@@ -16,7 +16,7 @@ class Post extends React.Component{
         <div className="body">
           <Vote item={post}/>
           <div className="content">
-            <div>{post.body} <Link to={"/posts/categories/"+post.category} className="category">{post.category}</Link></div>
+            <div>{post.body} <Link to={"/"+post.category} className="category">{post.category}</Link></div>
             <div className="action">
               <div>posted by {post.author} at {new Date(post.timestamp).toString()}.</div>
             </div>

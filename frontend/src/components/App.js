@@ -20,47 +20,43 @@ class App extends Component {
             		<img src={logo} alt="logo" />
         		</span>
         		<ul className="app-nav-bar">
-        			<li><Link to="/posts">Posts</Link></li>
-        			<li><Link to="/categories">Categories</Link></li>
-      				<li><Link to="/add/post">Add Post</Link></li>
+        			<li><Link to="/">Posts</Link></li>
+      				<li><Link to="/add/post/1">Add Post</Link></li>
         		</ul>
           </div>
           <div className="app-content">
-          <Route exact path="/(posts)?" render={({ match })=>
-            <div>
-              <PostList/>
-            </div>
-          }/>
-          <Route exact path="/posts/categories/:category" render={({ match })=>
-            <div>
-              <div>posts:{match.params.category}</div>
-              <PostList category={match.params.category}/>
-            </div>
-          }/>
+            <Route exact path="/" render={({ match })=>
+              <div>
+                <PostList/>
+              </div>
+            }/>
+            <Route exact path="/:category" render={({ match })=>
+              <div>
+                <div>Category:{match.params.category}</div>
+                <PostList category={match.params.category}/>
+              </div>
+            }/>
 
-		  <Route exact path="/add/post" render={()=>
-			<AddPost/>
-		  }/>
+      		  <Route exact path="/add/post/1" render={()=>
+      			<AddPost/>
+      		  }/>
 
-      <Route exact path="/update/post/:id" render={({match})=>
-        <UpdatePost id={match.params.id}/>
-      }/>
+            <Route exact path="/update/post/:id" render={({match})=>
+              <UpdatePost id={match.params.id}/>
+            }/>
 
-      <Route exact path="/delete/post/:id" render={({match})=>
-        <DeletePost id={match.params.id}/>
-      }/>
+            <Route exact path="/delete/post/:id" render={({match})=>
+              <DeletePost id={match.params.id}/>
+            }/>
 
-      <Route exact path="/posts/:id" render={({match})=>
-        <Post id={match.params.id}/>
-      }/>
+            <Route exact path="/:category/:id" render={({match})=>
+              <Post id={match.params.id}/>
+            }/>
 
-		  <Route exact path="/posts/:id/comments/add" render={({match})=>
-			<div>{match.params.id}</div>
-		  }/>
+      		  <Route exact path="/posts/:id/comments/add" render={({match})=>
+      			<div>{match.params.id}</div>
+      		  }/>
 
-          <Route exact path="/categories" render={()=>
-            <CategoryList/>
-          }/>
           </div>
           <div className="app-bottom-bar"></div>
         </div>
