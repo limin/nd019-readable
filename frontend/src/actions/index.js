@@ -4,13 +4,6 @@ export const RECEIVE_POSTS='RECEIVE_POSTS'
 export const POST_DELETED='POST_DELETED'
 export const COMMENT_DELETED='COMMENT_DELETED'
 export const RECEIVE_COMMENTS='RECEIVE_COMMENTS'
-export const ADD_COMMENT='ADD_COMMENT'
-export const UPDATE_COMMENT='UPDATE_COMMENT'
-export const DELETE_COMMENT='DELETE_COMMENT'
-export const UP_VOTE_POST='UP_VOTE_POST'
-export const DOWN_VOTE_POST='DOWN_VOTE_POST'
-export const UP_VOTE_COMMENT='UP_VOTE_COMMENT'
-export const DOWN_VOTE_COMMENT='DOWN_VOTE_COMMENT'
 
 export function receivePosts(posts){
 	return {
@@ -64,7 +57,6 @@ export function fetchPost(id){
 
 export function fetchComment(id){
   return function(dispatch){
-//  	dispatch(requestPost(id))
 		API.fetchComment(id).then(value=>{
 			dispatch(receiveComments([value]))
 			})
@@ -96,30 +88,14 @@ export function deleteComment(id){
 	}
 }
 
-export function upVotePost({id}){
-  return{
-    type:UP_VOTE_POST,
-    id,
-  }
+export function votePost(id,up){
+	return function(dispatch){
+		API.votePost(id,up).then(value=>dispatch(receivePosts([value])))
+	}
 }
 
-export function downVotePost({id}){
-  return{
-    type:DOWN_VOTE_POST,
-    id,
-  }
-}
-
-export function upVoteComment({id}){
-  return{
-    type:UP_VOTE_COMMENT,
-    id,
-  }
-}
-
-export function downVoteComment({id}){
-  return{
-    type:DOWN_VOTE_COMMENT,
-    id,
-  }
+export function voteComment(id,up){
+	return function(dispatch){
+		API.voteComment(id,up).then(value=>dispatch(receiveComments([value])))
+	}
 }

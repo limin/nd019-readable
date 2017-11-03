@@ -67,3 +67,21 @@ export const deleteComment=(id)=>fetch(`${config.API_BASE_URL}/comments/${id}`,{
     ...headers
   }
 }).then(res=>res.json())
+
+export const votePost=(id,up)=>fetch(`${config.API_BASE_URL}/posts/${id}`,{
+  method:"POST",
+  headers:{
+    ...headers,
+    'Content-Type': "application/json"
+  },
+  body:JSON.stringify({option:up?"upVote":"downVote"})}
+).then(res=>res.json())
+
+export const voteComment=(id,up)=>fetch(`${config.API_BASE_URL}/comments/${id}`,{
+  method:"POST",
+  headers:{
+    ...headers,
+    'Content-Type': "application/json"
+  },
+  body:JSON.stringify({option:up?"upVote":"downVote"})}
+).then(res=>res.json())

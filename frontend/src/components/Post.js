@@ -14,7 +14,7 @@ class Post extends React.Component{
       <div className="post">
         <div className="title">{post.title} <Link to={"/update/post/"+post.id}>Update</Link> <Link to={"/delete/post/"+post.id}>Delete</Link></div>
         <div className="body">
-          <Vote item={post}/>
+          <Vote item={post} type="post"/>
           <div className="content">
             <div>{post.body} <Link to={"/"+post.category} className="category">{post.category}</Link></div>
             <div className="action">
@@ -28,7 +28,7 @@ class Post extends React.Component{
           {
             post.comments.map((comment)=>(
             <li key={comment.id}>
-              <Vote item={comment}/>
+              <Vote item={comment} type="comment"/>
               <div className="content">
                 <div>{comment.body} <Link to={"/update/comment/"+post.category+"/"+post.id+"/"+comment.id}>Update</Link> <Link to={"/delete/comment/"+post.category+"/"+post.id+"/"+comment.id}>Delete</Link></div>
                 <div className="action">
