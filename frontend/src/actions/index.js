@@ -2,6 +2,7 @@ import * as API from '../utils/Api'
 
 export const RECEIVE_POSTS='RECEIVE_POSTS'
 export const POST_DELETED='POST_DELETED'
+export const COMMENT_DELETED='COMMENT_DELETED'
 export const RECEIVE_COMMENTS='RECEIVE_COMMENTS'
 export const ADD_COMMENT='ADD_COMMENT'
 export const UPDATE_COMMENT='UPDATE_COMMENT'
@@ -10,7 +11,6 @@ export const UP_VOTE_POST='UP_VOTE_POST'
 export const DOWN_VOTE_POST='DOWN_VOTE_POST'
 export const UP_VOTE_COMMENT='UP_VOTE_COMMENT'
 export const DOWN_VOTE_COMMENT='DOWN_VOTE_COMMENT'
-
 
 export function receivePosts(posts){
 	return {
@@ -22,6 +22,13 @@ export function receivePosts(posts){
 export function postDeleted(id){
 	return {
 		type:POST_DELETED,
+		id
+	}
+}
+
+export function commentDeleted(id){
+	return {
+		type:COMMENT_DELETED,
 		id
 	}
 }
@@ -39,6 +46,12 @@ export function addPost(post){
 	}
 }
 
+export function addComment(comment){
+	return function(dispatch){
+		API.createComment(comment).then(comment=>dispatch(receiveComments([comment])))
+	}
+}
+
 export function fetchPost(id){
   return function(dispatch){
 //  	dispatch(requestPost(id))
@@ -48,6 +61,16 @@ export function fetchPost(id){
 			})
 	  }
 }
+
+export function fetchComment(id){
+  return function(dispatch){
+//  	dispatch(requestPost(id))
+		API.fetchComment(id).then(value=>{
+			dispatch(receiveComments([value]))
+			})
+	  }
+}
+
 
 export function updatePost(id,post){
 	return function(dispatch){
@@ -61,37 +84,16 @@ export function deletePost(id){
 	}
 }
 
-export function addComment({id,body, author,timestamp,parentId}){
-  return{
-    type:ADD_COMMENT,
-    comment:{
-      id,
-      body,
-      author,
-      timestamp,
-      parentId,
-    }
-  }
+export function updateComment(id,comment){
+	return function(dispatch){
+		API.updateComment(id,comment).then(value=>dispatch(receiveComments([value])))
+	}
 }
 
-export function updateComment(comment){
-  let {id}=comment
-  return{
-    type:UPDATE_COMMENT,
-    comment:{
-      ...comment,
-      id,
-    }
-  }
-}
-
-export function deleteComment({id}){
-  return {
-    type:DELETE_COMMENT,
-    comment:{
-      id,
-    }
-  }
+export function deleteComment(id){
+	return function(dispatch){
+		API.deleteComment(id).then(value=>dispatch(commentDeleted(id)))
+	}
 }
 
 export function upVotePost({id}){

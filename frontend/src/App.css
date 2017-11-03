@@ -93,6 +93,19 @@ ul.categories li{
   padding: 3px;
 }
 
+input.title{
+  width:280px
+}
+
+input.author{
+  width:180px
+}
+
+textarea.body{
+  width:280px;
+  height:200px;
+}
+
 .button{
   padding:3px;
   color: #FFF;

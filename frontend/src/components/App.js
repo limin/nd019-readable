@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import {BrowserRouter,Route, Link} from 'react-router-dom'
-
-import CategoryList from '../components/CategoryList'
 import PostList from '../components/PostList'
 import Post from '../components/Post'
 import AddPost from '../components/AddPost'
+import AddComment from '../components/AddComment'
 import UpdatePost from '../components/UpdatePost'
 import DeletePost from '../components/DeletePost'
+import UpdateComment from '../components/UpdateComment'
+import DeleteComment from '../components/DeleteComment'
+
 import logo from '../logo.svg';
 import '../App.css';
 
@@ -21,7 +23,7 @@ class App extends Component {
         		</span>
         		<ul className="app-nav-bar">
         			<li><Link to="/">Posts</Link></li>
-      				<li><Link to="/add/post/1">Add Post</Link></li>
+      				<li><Link to="/add/post/0">Add Post</Link></li>
         		</ul>
           </div>
           <div className="app-content">
@@ -32,12 +34,11 @@ class App extends Component {
             }/>
             <Route exact path="/:category" render={({ match })=>
               <div>
-                <div>Category:{match.params.category}</div>
                 <PostList category={match.params.category}/>
               </div>
             }/>
 
-      		  <Route exact path="/add/post/1" render={()=>
+      		  <Route exact path="/add/post/0" render={()=>
       			<AddPost/>
       		  }/>
 
@@ -53,8 +54,14 @@ class App extends Component {
               <Post id={match.params.id}/>
             }/>
 
-      		  <Route exact path="/posts/:id/comments/add" render={({match})=>
-      			<div>{match.params.id}</div>
+      		  <Route exact path="/add/comment/:category/:parentId" render={({match})=>
+      			   <AddComment category={match.params.category} parentId={match.params.parentId}/>
+      		  }/>
+            <Route exact path="/update/comment/:category/:parentId/:commentId" render={({match})=>
+      			   <UpdateComment category={match.params.category} parentId={match.params.parentId} id={match.params.commentId}/>
+      		  }/>
+            <Route exact path="/delete/comment/:category/:parentId/:commentId" render={({match})=>
+      			   <DeleteComment category={match.params.category} parentId={match.params.parentId} id={match.params.commentId}/>
       		  }/>
 
           </div>

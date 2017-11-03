@@ -22,9 +22,9 @@ class AddPost extends React.Component{
       <div>
       	<div>Add post</div>
         <form  onSubmit={this.handleSubmit}>
-      	<div><input type="text" name="title" placeholder="title" /></div>
-      	<div><input type="text" name="body" placeholder="body" /></div>
-      	<div><input type="text" name="author" placeholder="author" /></div>
+      	<div><input className="title" type="text" name="title" placeholder="title" /></div>
+      	<div><textarea className="body" name="body" placeholder="body" /></div>
+      	<div><input className="author" type="text" name="author" placeholder="author" /></div>
         <div>
       		<select name="category">
           {

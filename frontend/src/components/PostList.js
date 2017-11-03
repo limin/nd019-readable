@@ -8,10 +8,17 @@ class PostList extends React.Component{
   render(){
     return (
       <div>
+        <div>
+        {this.props.posts.length} posts
+        {
+          this.props.category?`(Category:${this.props.category})`:""
+        }
+        . Sort by <a className="button">Score</a> <a className="button">Date</a>
+        </div>
         <ul className="posts">
         {
           this.props.posts.map((post)=>(
-            <li key={post.id}><Link to={"/"+post.category+"/"+post.id}>{post.title}</Link></li>
+            <li key={post.id}><span className="score">{post.voteScore}</span> <Link to={"/"+post.category+"/"+post.id}>{post.title}</Link> posted at {new Date(post.timestamp).toString()}</li>
           ))
         }
         </ul>

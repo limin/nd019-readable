@@ -3,6 +3,7 @@ import {combineReducers } from 'redux'
 import {
   RECEIVE_POSTS,
   POST_DELETED,
+  COMMENT_DELETED,
   ADD_COMMENT,
   RECEIVE_COMMENTS,
   UPDATE_COMMENT,
@@ -71,6 +72,16 @@ function comments(state={},action){
           newState[comment.id]=comment
       })
       return newState
+    }
+    case COMMENT_DELETED:{
+      let id=action.id;
+      return {
+        ...state,
+        [id]:{
+          ...state[id],
+          deleted:true
+        }
+      }
     }
     case ADD_COMMENT:{
       let {id}=action.comment;

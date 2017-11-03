@@ -23,14 +23,14 @@ class Post extends React.Component{
           </div>
         </div>
         <div className="comments">
-          <div>{post.comments.length} comments. <Link to={"/posts/"+post.id+"/add/comments"}>Add Comment</Link></div>
+          <div>{post.comments.length} comments. <Link to={"/add/comment/"+post.category+"/"+post.id}>Add Comment</Link></div>
           <ul className="comments">
           {
             post.comments.map((comment)=>(
             <li key={comment.id}>
               <Vote item={comment}/>
               <div className="content">
-                <div>{comment.body}</div>
+                <div>{comment.body} <Link to={"/update/comment/"+post.category+"/"+post.id+"/"+comment.id}>Update</Link> <Link to={"/delete/comment/"+post.category+"/"+post.id+"/"+comment.id}>Delete</Link></div>
                 <div className="action">
                   <div>commented by {comment.author} at {new Date(comment.timestamp).toString()}.</div>
                 </div>
@@ -48,7 +48,7 @@ class Post extends React.Component{
 function mapStateToProps({posts,comments},{id}){
   return{
     post:Object.values(posts).filter(post=>post.id===id).map(post=>{
-    	post.comments=Object.values(comments).filter(comment=>comment.parentId===post.id)
+    	post.comments=Object.values(comments).filter(comment=>comment.parentId===post.id && comment.deleted===false)
       	return post
     })[0]
   }

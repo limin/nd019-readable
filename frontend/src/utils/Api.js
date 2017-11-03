@@ -13,6 +13,9 @@ export const fetchPost=(id)=>{
     )
 }
 
+export const fetchComment=(id)=>
+  fetch(`${config.API_BASE_URL}/comments/${id}`,config.FETCH_INIT_PARAM).then(res=>res.json())
+
 export const createPost=(post)=>
   fetch(`${config.API_BASE_URL}/posts`, {
     method:"POST",
@@ -38,3 +41,29 @@ export const deletePost=(id)=>fetch(`${config.API_BASE_URL}/posts/${id}`,{
     ...headers
   }
 })
+
+export const createComment=(comment)=>
+  fetch(`${config.API_BASE_URL}/comments`, {
+    method:"POST",
+    headers:{
+      ...headers,
+      'Content-Type':"application/json"
+    },
+    body:JSON.stringify(comment)
+  }).then(res=>res.json())
+
+export const updateComment=(id,comment)=>fetch(`${config.API_BASE_URL}/comments/${id}`,{
+  method:"PUT",
+  headers:{
+    ...headers,
+    'Content-Type':"application/json"
+  },
+  body:JSON.stringify(comment)
+}).then(res=>res.json())
+
+export const deleteComment=(id)=>fetch(`${config.API_BASE_URL}/comments/${id}`,{
+  method:"DELETE",
+  headers:{
+    ...headers
+  }
+}).then(res=>res.json())

@@ -24,8 +24,8 @@ class UpdatePost extends React.Component{
       <div>
       	<div>Update post</div>
         <form  onSubmit={this.handleSubmit}>
-      	<div><input value={this.state.title} type="text" name="title" placeholder="title" onChange={(e)=>this.setState({title:e.target.value})} /></div>
-      	<div><input value={this.state.body}  type="text" name="body" placeholder="body" onChange={(e)=>this.setState({body:e.target.value})}/></div>
+      	<div><input className="title" value={this.state.title} type="text" name="title" placeholder="title" onChange={(e)=>this.setState({title:e.target.value})} /></div>
+      	<div><textarea className="body" name="body" placeholder="body" onChange={(e)=>this.setState({body:e.target.value})}>{this.state.body}</textarea></div>
       	<div>
       		<input type="submit" value="Update"/>
       	</div>
