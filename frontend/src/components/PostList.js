@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {fetchPost} from '../actions'
+import {fetchPost,sortByDate,sortByScore,SCORE_FIELD,DATE_FIELD} from '../actions'
 import {connect} from 'react-redux'
 import {getDerivedComments} from '../selectors'
 
@@ -13,7 +13,7 @@ class PostList extends React.Component{
         {
           this.props.category?`(Category:${this.props.category})`:""
         }
-        . Sort by <a className="button">Score</a> <a className="button">Date</a>
+        . Sort by <a className="button" onClick={this.props.sortByScore}>Score</a> <a className="button" onClick={this.props.sortByDate}>Date</a>
         </div>
         <ul className="posts">
         {
@@ -37,12 +37,30 @@ class PostList extends React.Component{
 
 function mapDispatchToProps(dispatch){
   return {
-    fetchPost:id=>dispatch(fetchPost(id))
+    fetchPost:id=>dispatch(fetchPost(id)),
+    sortByScore:()=>dispatch(sortByScore()),
+    sortByDate:()=>dispatch(sortByDate())
   }
 }
 
-function mapStateToProps({categories,posts,comments},{category}){
+function mapStateToProps({categories,posts,comments,sorts},{category}){
   const postList=category?Object.values(posts).filter((post)=>post.category===category):Object.values(posts)
+  switch (sorts.field) {
+    case SCORE_FIELD:
+      postList.sort((a,b)=>a.voteScore-b.voteScore)
+      if(!sorts.ascending){
+        postList.reverse()
+      }
+      break;
+    case DATE_FIELD:
+      postList.sort((a,b)=>a.timestamp-b.timestamp)
+      if(!sorts.ascending){
+        postList.reverse()
+      }
+      break;
+    default:
+
+  }
   return {
     categories:Object.values(categories),
     posts:postList.filter((post)=>post.deleted===false).map((post)=>{

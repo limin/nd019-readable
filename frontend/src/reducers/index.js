@@ -5,6 +5,7 @@ import {
   POST_DELETED,
   COMMENT_DELETED,
   RECEIVE_COMMENTS,
+  SORT_POSTS,
 } from '../actions'
 
 function categories(state={},action){
@@ -61,4 +62,16 @@ function comments(state={},action){
   }
 }
 
-export default combineReducers({categories,posts,comments,})
+function sorts(state={},action){
+  switch (action.type) {
+    case SORT_POSTS:
+      return{
+        field:action.field,
+        ascending:!state.ascending
+      }
+    default:
+      return state
+  }
+}
+
+export default combineReducers({categories,posts,comments,sorts,})

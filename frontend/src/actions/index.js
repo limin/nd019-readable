@@ -4,6 +4,23 @@ export const RECEIVE_POSTS='RECEIVE_POSTS'
 export const POST_DELETED='POST_DELETED'
 export const COMMENT_DELETED='COMMENT_DELETED'
 export const RECEIVE_COMMENTS='RECEIVE_COMMENTS'
+export const SORT_POSTS='SORT_POSTS'
+export const SCORE_FIELD='SCORE'
+export const DATE_FIELD='DATE'
+
+export function sortByDate(){
+	return {
+		type:SORT_POSTS,
+		field:DATE_FIELD
+	}
+}
+
+export function sortByScore(){
+	return {
+		type:SORT_POSTS,
+		field:SCORE_FIELD
+	}
+}
 
 export function receivePosts(posts){
 	return {
