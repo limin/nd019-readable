@@ -64,7 +64,7 @@ function mapStateToProps({categories,posts,comments,sorts},{category}){
   return {
     categories:Object.values(categories),
     posts:postList.filter((post)=>post.deleted===false).map((post)=>{
-    return Object.assign(post,{comments:getDerivedComments({posts,comments}).filter(
+    return Object.assign({},post,{comments:getDerivedComments({posts,comments}).filter(
       (comment)=>comment.parentId===post.id
     )})
   })

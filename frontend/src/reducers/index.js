@@ -18,7 +18,9 @@ function posts(state={},action){
       const posts=action.posts
       const newState=JSON.parse(JSON.stringify(state))
       posts.forEach(post=>{
-          newState[post.id]=post
+          const newPost=JSON.parse(JSON.stringify(post))
+          delete newPost.comments
+          newState[post.id]=newPost
       })
       return newState
     }
