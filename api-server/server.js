@@ -13,8 +13,8 @@ const app = express()
 app.use(express.static('public'))
 app.use(cors({
   //for deve environment in localhost
-  //origin: 'http://localhost:3000',
-  //credentials: true,
+  origin: config.origin,
+  credentials: true,
 }))
 
 
