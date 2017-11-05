@@ -2,7 +2,7 @@ import React from 'react';
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import ReactDOM from 'react-dom';
-import {createStore,applyMiddleware } from 'redux'
+import {createStore,applyMiddleware,compose } from 'redux'
 import {Provider} from 'react-redux'
 import './index.css';
 import App from './components/App';
@@ -12,7 +12,9 @@ import registerServiceWorker from './registerServiceWorker';
 
 const rendDom=(preloadedState)=>{
   	const loggerMiddleware = createLogger()
-    const store=createStore(reducer,preloadedState,applyMiddleware(thunkMiddleware,loggerMiddleware ))
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+    const enhancer = composeEnhancers(applyMiddleware(thunkMiddleware,loggerMiddleware ))
+    const store=createStore(reducer,preloadedState,enhancer)
     ReactDOM.render(
       <Provider store={store}>
         <App />

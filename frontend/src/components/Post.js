@@ -11,6 +11,13 @@ class Post extends React.Component{
   }
   render(){
     let {post}=this.props
+    if(post==null || post.deleted===true){
+      return (
+          <div>
+          Page not found.
+          </div>
+      )
+    }
     return (
       <div className="post">
         <div className="title">{post.title} <Link to={"/update/post/"+post.id}>Update</Link> <Link to={"/delete/post/"+post.id}>Delete</Link></div>
@@ -47,12 +54,13 @@ class Post extends React.Component{
 }
 
 function mapStateToProps({posts,comments},{id}){
+  const postList=Object.values(posts).filter(post=>post.id===id).map(post=>{
+    return Object.assign({},post,{comments:getDerivedComments({posts,comments}).filter(
+      (comment)=>comment.parentId===post.id && comment.deleted===false
+    )})
+  })
   return{
-    post:Object.values(posts).filter(post=>post.id===id).map(post=>{
-      return Object.assign({},post,{comments:getDerivedComments({posts,comments}).filter(
-        (comment)=>comment.parentId===post.id && comment.deleted===false
-      )})
-    })[0]
+    post:postList.length===0?null:postList[0]
   }
 }
 export default connect(mapStateToProps)(Post)

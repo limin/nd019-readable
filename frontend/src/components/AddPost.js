@@ -14,7 +14,6 @@ class AddPost extends React.Component{
     values.timestamp=Date.now()
     values.deleted=false
     this.props.addPost(values)
-    //window.location.href="/"
     this.props.history.push("/")
   }
   render(){
