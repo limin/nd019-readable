@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {fetchPost,sortByDate,sortByScore,SCORE_FIELD,DATE_FIELD} from '../actions'
 import {connect} from 'react-redux'
 import {getDerivedComments} from '../selectors'
+import Vote from '../components/Vote'
 
 class PostList extends React.Component{
   render(){
@@ -15,13 +16,36 @@ class PostList extends React.Component{
         }
         . Sort by <a className="button" onClick={this.props.sortByScore}>Score</a> <a className="button" onClick={this.props.sortByDate}>Date</a>
         </div>
-        <ul className="posts">
-        {
-          this.props.posts.map((post)=>(
-            <li key={post.id}><span className="score">{post.voteScore}</span> <Link to={"/"+post.category+"/"+post.id}>{post.title}</Link> posted at {new Date(post.timestamp).toString()}</li>
-          ))
-        }
-        </ul>
+        <table className="posts">
+          <thead>
+            <tr>
+              <th>Score</th>
+              <th>Title</th>
+              <th>Comments</th>
+              <th>Author</th>
+              <th>Category</th>
+              <th>Time</th>
+              <th>Update</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+          {
+            this.props.posts.map((post)=>(
+              <tr>
+                <td><Vote item={post} type="post"/></td>
+                <td><Link to={"/"+post.category+"/"+post.id}>{post.title}</Link></td>
+                <td>{post.comments.length}</td>
+                <td>{post.author}</td>
+                <td><Link to={"/"+post.category} className="category">{post.category}</Link></td>
+                <td>{new Date(post.timestamp).toString()}</td>
+                <td><Link to={"/update/post/"+post.id}>Update</Link></td>
+                <td><Link to={"/delete/post/"+post.id}>Delete</Link></td>
+              </tr>
+            ))
+          }
+          </tbody>
+        </table>
         <br/>
         <ul className="categories">
         {

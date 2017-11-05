@@ -67,6 +67,15 @@ ul.categories li{
   margin: 8px 8px 8px 0px;
 }
 
+table.posts td, table.posts th{
+  border-right:#cccccc solid 1px;
+  padding: 3px;
+}
+
+.score{
+  text-align: center;
+}
+
 .post .title, .post .body, .post .comments{
   padding-top: 6px;
 }
