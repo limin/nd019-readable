@@ -13,9 +13,14 @@
 
 .app-top-bar {
   background-color: #222;
-  height: 80px;
+  height: 100px;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+.fork img{
+  position: absolute; top: 0; right: 0; border: 0;
+  height: 110px
 }
 
 , .app-content, .app-bottom-bar{
@@ -55,6 +60,7 @@
   to { transform: rotate(360deg); }
 }
 
+
 ul.categories, ul.posts, ul.comments{
   list-style: none;
   text-align: left;
@@ -67,14 +73,31 @@ ul.categories li{
   margin: 8px 8px 8px 0px;
 }
 
+.postList .modal-card-foot {
+  justify-content: center;
+}
+table.posts th{
+  text-align: center;
+}
 table.posts td, table.posts th{
   border-right:#cccccc solid 1px;
   padding: 3px;
+  vertical-align: middle;
+  border-width: 1px;
+}
+
+table.table tbody tr:last-child td, table.table tbody tr:last-child th {
+    border-bottom-width: 1px;
 }
 
 .score{
   text-align: center;
 }
+
+.center{
+  text-align: center;
+}
+
 
 .post .title, .post .body, .post .comments{
   padding-top: 6px;
@@ -93,12 +116,12 @@ table.posts td, table.posts th{
   background-color: #E1ECF4
 }
 
-.post .vote{
-  width: 60px;
+.vote{
+  width: 80px;
   text-align: center;
 }
 
-.post .vote .score{
+.vote .score{
   padding: 3px;
 }
 

@@ -1,22 +1,39 @@
 import React from 'react'
+import Moment from 'react-moment'
 import {Link} from 'react-router-dom'
-import {fetchPost,sortByDate,sortByScore,SCORE_FIELD,DATE_FIELD} from '../actions'
+import {deletePost, fetchPost,sortByDate,sortByScore,SCORE_FIELD,DATE_FIELD} from '../actions'
 import {connect} from 'react-redux'
-import {getDerivedComments} from '../selectors'
+import {getDerivedPosts} from '../selectors'
 import Vote from '../components/Vote'
 
 class PostList extends React.Component{
+  state={}
+  onDeleteClick=(post)=>{
+    this.setState({
+      selected:post,
+      activeModal:true
+    })
+  }
+  deletePost=()=>{
+    this.props.deletePost(this.state.selected)
+    this.closeModal()
+  }
+  closeModal=()=>{
+    this.setState({
+      activeModal: false
+    })
+  }
   render(){
     return (
-      <div>
+      <div className="postList">
         <div>
         {this.props.posts.length} posts
         {
           this.props.category?`(Category:${this.props.category})`:""
         }
-        . Sort by <a className="button" onClick={this.props.sortByScore}>Score</a> <a className="button" onClick={this.props.sortByDate}>Date</a>
+        . Sort by <a className="button is-small is-text" onClick={this.props.sortByScore}>Score</a> <a className="button is-small is-text" onClick={this.props.sortByDate}>Date</a>
         </div>
-        <table className="posts">
+        <table className="table posts">
           <thead>
             <tr>
               <th>Score</th>
@@ -32,15 +49,17 @@ class PostList extends React.Component{
           <tbody>
           {
             this.props.posts.map((post)=>(
-              <tr>
+              <tr key={post.id}>
                 <td><Vote item={post} type="post"/></td>
                 <td><Link to={"/"+post.category+"/"+post.id}>{post.title}</Link></td>
-                <td>{post.comments.length}</td>
+                <td className="center">{post.comments.length}</td>
                 <td>{post.author}</td>
-                <td><Link to={"/"+post.category} className="category">{post.category}</Link></td>
-                <td>{new Date(post.timestamp).toString()}</td>
-                <td><Link to={"/update/post/"+post.id}>Update</Link></td>
-                <td><Link to={"/delete/post/"+post.id}>Delete</Link></td>
+                <td className="center"><Link to={"/"+post.category} className="button is-text">{post.category}</Link></td>
+                <td>
+                  <Moment format="YYYY/MM/DD HH:mm">{new Date(post.timestamp)}</Moment>
+                </td>
+                <td><Link className="button is-text" to={"/update/post/"+post.id}>Update</Link></td>
+                <td><a className="button" onClick={()=>this.onDeleteClick(post)}>Delete</a></td>
               </tr>
             ))
           }
@@ -54,6 +73,22 @@ class PostList extends React.Component{
           ))
         }
         </ul>
+        <div className={this.state.activeModal?"modal is-active":"modal"}>
+          <div className="modal-background"></div>
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <p className="modal-card-title">Delete Post</p>
+              <button className="delete" aria-label="close" onClick={this.closeModal}></button>
+            </header>
+            <section className="modal-card-body">
+              <p>Are you sure you want to delete the post?</p>
+            </section>
+            <footer className="modal-card-foot">
+              <button className="button is-danger" onClick={this.deletePost}>Yes</button>
+              <button className="button" onClick={this.closeModal}>No</button>
+            </footer>
+          </div>
+        </div>
       </div>
     )
   }
@@ -63,12 +98,14 @@ function mapDispatchToProps(dispatch){
   return {
     fetchPost:id=>dispatch(fetchPost(id)),
     sortByScore:()=>dispatch(sortByScore()),
-    sortByDate:()=>dispatch(sortByDate())
+    sortByDate:()=>dispatch(sortByDate()),
+    deletePost:(post)=>dispatch(deletePost(post.id))
   }
 }
 
 function mapStateToProps({categories,posts,comments,sorts},{category}){
-  const postList=category?Object.values(posts).filter((post)=>post.category===category):Object.values(posts)
+  const postList=category?getDerivedPosts({posts,comments}).filter((post)=>post.category===category):getDerivedPosts({posts,comments})
+
   switch (sorts.field) {
     case SCORE_FIELD:
       postList.sort((a,b)=>a.voteScore-b.voteScore)
@@ -87,11 +124,7 @@ function mapStateToProps({categories,posts,comments,sorts},{category}){
   }
   return {
     categories:Object.values(categories),
-    posts:postList.filter((post)=>post.deleted===false).map((post)=>{
-    return Object.assign({},post,{comments:getDerivedComments({posts,comments}).filter(
-      (comment)=>comment.parentId===post.id
-    )})
-  })
+    posts:postList
   }
 }
 

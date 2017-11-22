@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {fetchPost} from '../actions'
 import {connect} from 'react-redux'
-import {getDerivedComments} from '../selectors'
+import {getDerivedPosts} from '../selectors'
 import Vote from '../components/Vote'
 
 class Post extends React.Component{
@@ -54,11 +54,7 @@ class Post extends React.Component{
 }
 
 function mapStateToProps({posts,comments},{id}){
-  const postList=Object.values(posts).filter(post=>post.id===id).map(post=>{
-    return Object.assign({},post,{comments:getDerivedComments({posts,comments}).filter(
-      (comment)=>comment.parentId===post.id && comment.deleted===false
-    )})
-  })
+  const postList=getDerivedPosts({posts,comments}).filter(post=>post.id===id)
   return{
     post:postList.length===0?null:postList[0]
   }
