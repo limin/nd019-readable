@@ -169,6 +169,19 @@ app.get('/posts', (req, res) => {
       )
 })
 
+app.get('/comments', (req, res) => {
+    comments.getAll(req.token)
+      .then(
+          (data) => res.send(data),
+          (error) => {
+              console.error(error)
+              res.status(500).send({
+                 error: 'There was an error.'
+          })
+        }
+      )
+})
+
 app.post('/posts', bodyParser.json(), (req, res) => {
     posts.add(req.token, req.body)
       .then(

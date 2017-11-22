@@ -11,7 +11,7 @@ const defaultData = {
     author: 'thingtwo',
     voteScore: 6,
     deleted: false,
-    parentDeleted: false 
+    parentDeleted: false
   },
   "8tu4bsun805n8un48ve89": {
     id: '8tu4bsun805n8un48ve89',
@@ -33,6 +33,16 @@ function getData (token) {
   return data
 }
 
+function getAll (token) {
+  return new Promise((res) => {
+    const comments = getData(token)
+    let keys = Object.keys(comments)
+    let filtered_keys = keys.filter(key => !comments[key].deleted)
+    res(filtered_keys.map(key => comments[key]))
+  })
+}
+
+
 function getByParent (token, parentId) {
   return new Promise((res) => {
     let comments = getData(token)
@@ -48,7 +58,7 @@ function get (token, id) {
     res(
       comments[id].deleted || comments[id].parentDeleted
         ? {}
-        : comments[id]      
+        : comments[id]
       )
   })
 }
@@ -67,7 +77,7 @@ function add (token, comment) {
       deleted: false,
       parentDeleted: false
     }
-     
+
     res(comments[comment.id])
   })
 }
@@ -120,6 +130,7 @@ function edit (token, id, comment) {
 
 module.exports = {
   get,
+  getAll,
   getByParent,
   add,
   vote,
