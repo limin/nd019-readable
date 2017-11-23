@@ -1,6 +1,6 @@
 # Readable Project
 
-This is the final assessment project for Udacity's Redux course of [Learn React JS - React Nanodegree](https://www.udacity.com/course/react-nanodegree--nd019) where you will build a content and comment web app. Users will be able to post content to predefined categories, comment on their posts and other users' posts, and vote on posts and comments. Users will also be able to edit and delete posts and comments.
+This is the final assessment project for Udacity's Redux course of [Learn React JS - React Nanodegree](https://www.udacity.com/course/react-nanodegree--nd019) to build a content and comment web app. Users will be able to post content to predefined categories, comment on their posts and other users' posts, and vote on posts and comments. Users will also be able to edit and delete posts and comments.
 
 ### Views
 * Default (Root)
