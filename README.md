@@ -83,7 +83,7 @@ To get started developing right away:
     - `npm install`
     - `node server`
 
-* In another terminal window, install and start the pre-scaffolded Create React App project
+* In another terminal window, install and start the frontend project
     - `cd frontend`
     - `npm install`
     - `npm start`
