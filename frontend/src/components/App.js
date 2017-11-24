@@ -23,8 +23,8 @@ class App extends Component {
             		<img src={logo} alt="logo" />
         		</span>
         		<ul className="app-nav-bar">
-        			<li><Link to="/">Posts</Link></li>
-      				<li><Link to="/add/post/0">Add Post</Link></li>
+        			<li><Link className="button is-primary is-outlined" to="/">Posts</Link></li>
+      				<li><Link className="button is-primary is-outlined" to="/add/post/0">Add Post</Link></li>
         		</ul>
             <div className="fork">
               {// from: https://github.com/blog/273-github-ribbons

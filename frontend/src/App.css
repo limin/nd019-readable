@@ -48,7 +48,11 @@
 
 .app-nav-bar li{
   display: inline-block;
-  padding: 6px;
+  margin: 2px;
+}
+
+.app-nav-bar li .button{
+  border-width: 0
 }
 
 .app-nav-bar li:hover{
@@ -145,7 +149,8 @@ textarea.body{
   cursor: pointer;
 }
 
-.post .action{
+.post .action > span{
+  padding: 3px 6px;
   color: #6a737c;
   background-color: #E0EAF1;
   font-size: small;

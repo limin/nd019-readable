@@ -64,7 +64,7 @@ function comments(state={},action){
   }
 }
 
-function sorts(state={},action){
+function sorts(state={"field":"SCORE","ascending":false},action){
   switch (action.type) {
     case SORT_POSTS:
       return{

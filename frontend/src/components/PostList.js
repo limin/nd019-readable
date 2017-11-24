@@ -5,9 +5,11 @@ import {deletePost, fetchPost,sortByDate,sortByScore,SCORE_FIELD,DATE_FIELD} fro
 import {connect} from 'react-redux'
 import {getDerivedPosts} from '../selectors'
 import Vote from '../components/Vote'
+import ConfirmDialog from './ConfirmDialog'
+import {MOMENT_FORMAT} from '../utils'
 
 class PostList extends React.Component{
-  state={}
+  state={activeModal:false}
   onDeleteClick=(post)=>{
     this.setState({
       selected:post,
@@ -53,10 +55,10 @@ class PostList extends React.Component{
                 <td><Vote item={post} type="post"/></td>
                 <td><Link to={"/"+post.category+"/"+post.id}>{post.title}</Link></td>
                 <td className="center">{post.comments.length}</td>
-                <td>{post.author}</td>
+                <td className="center">{post.author}</td>
                 <td className="center"><Link to={"/"+post.category} className="button is-text">{post.category}</Link></td>
                 <td>
-                  <Moment format="YYYY/MM/DD HH:mm">{new Date(post.timestamp)}</Moment>
+                  <Moment format={MOMENT_FORMAT}>{new Date(post.timestamp)}</Moment>
                 </td>
                 <td><Link className="button is-text" to={"/update/post/"+post.id}>Update</Link></td>
                 <td><a className="button" onClick={()=>this.onDeleteClick(post)}>Delete</a></td>
@@ -69,26 +71,11 @@ class PostList extends React.Component{
         <ul className="categories">
         {
           this.props.categories.map((category)=>(
-            <li key={category.name}><Link to={"/"+category.path}>{category.name}</Link></li>
+            <li key={category.name}><Link to={"/"+category.path} className="tag is-dark">{category.name}</Link></li>
           ))
         }
         </ul>
-        <div className={this.state.activeModal?"modal is-active":"modal"}>
-          <div className="modal-background"></div>
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <p className="modal-card-title">Delete Post</p>
-              <button className="delete" aria-label="close" onClick={this.closeModal}></button>
-            </header>
-            <section className="modal-card-body">
-              <p>Are you sure you want to delete the post?</p>
-            </section>
-            <footer className="modal-card-foot">
-              <button className="button is-danger" onClick={this.deletePost}>Yes</button>
-              <button className="button" onClick={this.closeModal}>No</button>
-            </footer>
-          </div>
-        </div>
+        <ConfirmDialog title="Delete Post" body="Are you sure you want to delete the post?" activeModal={this.state.activeModal} onCancel={this.closeModal} onConfirm={this.deletePost}/>
       </div>
     )
   }

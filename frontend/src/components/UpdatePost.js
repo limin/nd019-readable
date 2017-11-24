@@ -1,34 +1,101 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import serializeForm from 'form-serialize'
+//import serializeForm from 'form-serialize'
 import {updatePost,fetchPost} from '../actions'
 import {withRouter} from 'react-router';
+import update from 'immutability-helper'
 
 class UpdatePost extends React.Component{
+  state={
+    messages:{},
+    post:{
+      ...this.props.post
+    }
+  }
+
+  validate=()=>{
+    const {post}=this.state
+    const messages={}
+    post.title=post.title.trim()
+    if(post.title.length===0){
+      messages["title"]="Title is invalid."
+    }
+    post.body=post.body.trim()
+    if(post.body.length===0){
+      messages["body"]="Body is invalid."
+    }
+    const newState=update(this.state,{
+      post:{$set:post},
+      messages:{$set:messages}
+    });
+    this.setState(newState)
+    return newState
+  }
+
+
   handleSubmit = (e) => {
     e.preventDefault()
-    const values = serializeForm(e.target, { hash: true })
-    this.props.updatePost(this.props.id,values)
-    //window.location.href="/"
-    this.props.history.push("/")
+    //const values = serializeForm(e.target, { hash: true })
+    const {messages,post}=this.validate()
+    if(Object.keys(messages).length===0){
+      this.props.updatePost(this.props.id,post)
+      this.props.history.push("/")
+    }
   }
 
   componentDidMount(){
     this.props.fetchPost(this.props.id)
   }
-  state={
-    ...this.props.post
-  }
+
   render(){
+    const {messages,post}=this.state
+    if(post==null || post.deleted===true){
+      return (
+          <div>
+          Page not found.
+          </div>
+      )
+    }
+
     return(
       <div>
-      	<div>Update post</div>
+      	<h2 className="title">Update post</h2>
         <form  onSubmit={this.handleSubmit}>
-      	<div><input className="title" value={this.state.title} type="text" name="title" placeholder="title" onChange={(e)=>this.setState({title:e.target.value})} /></div>
-      	<div><textarea className="body" name="body" placeholder="body" onChange={(e)=>this.setState({body:e.target.value})}>{this.state.body}</textarea></div>
-      	<div>
-      		<input type="submit" value="Update"/>
-      	</div>
+        <div className="field">
+          <label className="label">Title</label>
+          <div className={messages.hasOwnProperty("title")?"control has-icons-right":"control"}>
+            <input className={messages.hasOwnProperty("title")?"input is-danger":"input"} name="title" value={post.title} type="text" placeholder="title" onChange={(e)=>this.setState(update(this.state,{post:{title:{$set:e.target.value}}}))}/>
+            {
+              messages.hasOwnProperty("title") &&
+                <span className="icon is-small is-right">
+                  <i className="fa fa-warning"></i>
+                </span>
+            }
+          </div>
+          {
+            messages.hasOwnProperty("title") && <p className="help is-danger">{messages['title']}</p>
+          }
+        </div>
+        <div className="field">
+          <label className="label">Body</label>
+          <div className={messages.hasOwnProperty("body")?"control has-icons-right":"control"}>
+            <textarea className={messages.hasOwnProperty("body")?"textarea is-danger":"textarea"} name="body" value={post.body} placeholder="body" onChange={(e)=>this.setState(update(this.state,{post:{body:{$set:e.target.value}}}))}></textarea>
+            {
+              messages.hasOwnProperty("body") &&
+                <span className="icon is-small is-right">
+                  <i className="fa fa-warning"></i>
+                </span>
+            }
+          </div>
+          {
+            messages.hasOwnProperty("body") && <p className="help is-danger">{messages['body']}</p>
+          }
+        </div>
+        <div className="field is-grouped">
+          <div className="control">
+            <input type="submit" className="button is-link" value="Update"/>
+          </div>
+        </div>
         </form>
       </div>
       )

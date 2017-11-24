@@ -1,11 +1,41 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {fetchPost} from '../actions'
+import {withRouter} from 'react-router'
+import {fetchPost,deleteComment,deletePost} from '../actions'
 import {connect} from 'react-redux'
 import {getDerivedPosts} from '../selectors'
 import Vote from '../components/Vote'
+import {MOMENT_FORMAT} from '../utils'
+import Moment from 'react-moment'
+import ConfirmDialog from '../components/ConfirmDialog'
 
 class Post extends React.Component{
+  state={
+    activePostModal:false,
+    activeCommentModal:false
+  }
+  onDeletePostClick=()=>{
+    this.setState({
+      activePostModal:true
+    })
+  }
+  onDeleteCommentClick=(comment)=>{
+    this.setState({
+      selectedComment:comment,
+      activeCommentModal:true
+    })
+  }
+
+  deletePost=()=>{
+    this.props.dispatch(deletePost(this.props.post.id))
+    this.props.history.go(-1)
+  }
+
+  deleteComment=()=>{
+    this.props.dispatch(deleteComment(this.state.selectedComment.id))
+    this.setState({activeCommentModal:false})
+  }
+
   componentDidMount(){
     this.props.dispatch(fetchPost(this.props.id))
   }
@@ -20,27 +50,27 @@ class Post extends React.Component{
     }
     return (
       <div className="post">
-        <div className="title">{post.title} <Link to={"/update/post/"+post.id}>Update</Link> <Link to={"/delete/post/"+post.id}>Delete</Link></div>
+        <div className="title">{post.title} <Link className="button is-text" to={"/update/post/"+post.id}>Update</Link> <span className="button" onClick={this.onDeletePostClick}>Delete</span></div>
         <div className="body">
           <Vote item={post} type="post"/>
           <div className="content">
-            <div>{post.body} <Link to={"/"+post.category} className="category">{post.category}</Link></div>
+            <div>{post.body} <Link to={"/"+post.category} className="tag is-dark">{post.category}</Link></div>
             <div className="action">
-              <div>posted by {post.author} at {new Date(post.timestamp).toString()}.</div>
+              <span>posted by {post.author} at <Moment format={MOMENT_FORMAT}>{new Date(post.timestamp)}</Moment>.</span>
             </div>
           </div>
         </div>
         <div className="comments">
-          <div>{post.comments.length} comments. <Link to={"/add/comment/"+post.category+"/"+post.id}>Add Comment</Link></div>
+          <div><span>{post.comments.length} comments.</span> <Link className="button is-text is-small" to={"/add/comment/"+post.category+"/"+post.id}>Add Comment</Link></div>
           <ul className="comments">
           {
             post.comments.map((comment)=>(
             <li key={comment.id}>
               <Vote item={comment} type="comment"/>
               <div className="content">
-                <div>{comment.body} <Link to={"/update/comment/"+post.category+"/"+post.id+"/"+comment.id}>Update</Link> <Link to={"/delete/comment/"+post.category+"/"+post.id+"/"+comment.id}>Delete</Link></div>
+                <div>{comment.body} <Link className="button is-text is-small" to={"/update/comment/"+post.category+"/"+post.id+"/"+comment.id}>Update</Link> <span className="button is-small"  onClick={()=>this.onDeleteCommentClick(comment)}>Delete</span></div>
                 <div className="action">
-                  <div>commented by {comment.author} at {new Date(comment.timestamp).toString()}.</div>
+                  <span>commented by {comment.author} at <Moment format={MOMENT_FORMAT}>{new Date(comment.timestamp)}</Moment>.</span>
                 </div>
               </div>
             </li>
@@ -48,6 +78,8 @@ class Post extends React.Component{
           }
           </ul>
         </div>
+        <ConfirmDialog  title="Delete Post" body="Are you sure you want to delete the post?" activeModal={this.state.activePostModal} onCancel={()=>this.setState({activePostModal:false})} onConfirm={this.deletePost}/>
+        <ConfirmDialog  title="Delete Comment" body="Are you sure you want to delete the comment?" activeModal={this.state.activeCommentModal} onCancel={()=>this.setState({activeCommentModal:false})} onConfirm={this.deleteComment}/>
       </div>
     )
   }
@@ -59,4 +91,4 @@ function mapStateToProps({posts,comments},{id}){
     post:postList.length===0?null:postList[0]
   }
 }
-export default connect(mapStateToProps)(Post)
+export default withRouter(connect(mapStateToProps)(Post))
