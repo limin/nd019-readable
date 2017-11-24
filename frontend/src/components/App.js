@@ -5,9 +5,7 @@ import Post from '../components/Post'
 import AddPost from '../components/AddPost'
 import AddComment from '../components/AddComment'
 import UpdatePost from '../components/UpdatePost'
-import DeletePost from '../components/DeletePost'
 import UpdateComment from '../components/UpdateComment'
-import DeleteComment from '../components/DeleteComment'
 
 import logo from '../logo.svg';
 import '../App.css';
@@ -52,10 +50,6 @@ class App extends Component {
               <UpdatePost id={match.params.id}/>
             }/>
 
-            <Route exact path="/delete/post/:id" render={({match})=>
-              <DeletePost id={match.params.id}/>
-            }/>
-
             <Route exact path="/:category/:id" render={({match})=>
               <Post id={match.params.id}/>
             }/>
@@ -65,9 +59,6 @@ class App extends Component {
       		  }/>
             <Route exact path="/update/comment/:category/:parentId/:commentId" render={({match})=>
       			   <UpdateComment category={match.params.category} parentId={match.params.parentId} id={match.params.commentId}/>
-      		  }/>
-            <Route exact path="/delete/comment/:category/:parentId/:commentId" render={({match})=>
-      			   <DeleteComment category={match.params.category} parentId={match.params.parentId} id={match.params.commentId}/>
       		  }/>
 
           </div>
