@@ -26,6 +26,7 @@ class PostList extends React.Component{
     })
   }
   render(){
+    const {posts,sorts,category}=this.props
     return (
       <div className="postList">
         <div>
@@ -33,7 +34,7 @@ class PostList extends React.Component{
         {
           this.props.category?`(Category:${this.props.category})`:""
         }
-        . Sort by <a className="button is-small is-text" onClick={this.props.sortByScore}>Score</a> <a className="button is-small is-text" onClick={this.props.sortByDate}>Date</a>
+        . Sort by <a className="button is-small is-text" onClick={this.props.sortByScore}>Score</a>{sorts.field==="SCORE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>} <a className="button is-small is-text" onClick={this.props.sortByDate}>Date</a>{sorts.field==="DATE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>}
         </div>
         <table className="table posts">
           <thead>
@@ -111,7 +112,8 @@ function mapStateToProps({categories,posts,comments,sorts},{category}){
   }
   return {
     categories:Object.values(categories),
-    posts:postList
+    posts:postList,
+    sorts
   }
 }
 
