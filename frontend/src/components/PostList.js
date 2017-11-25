@@ -30,9 +30,9 @@ class PostList extends React.Component{
     return (
       <div className="postList">
         <div>
-        {this.props.posts.length} posts
+        <span>{this.props.posts.length} posts</span>
         {
-          this.props.category?`(Category:${this.props.category})`:""
+          this.props.category && <span> in <span className="tag is-dark">{this.props.category}</span></span>
         }
         . Sort by <a className="button is-small is-text" onClick={this.props.sortByScore}>Score</a>{sorts.field==="SCORE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>} <a className="button is-small is-text" onClick={this.props.sortByDate}>Date</a>{sorts.field==="DATE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>}
         </div>
