@@ -26,15 +26,16 @@ class PostList extends React.Component{
     })
   }
   render(){
-    const {posts,sorts,category}=this.props
+    const {posts,sorts,category,categories,sortByScore,sortByDate}=this.props
     return (
       <div className="postList">
         <div>
-        <span>{this.props.posts.length} posts</span>
+        <span>{posts.length} posts</span>
         {
-          this.props.category && <span> in <span className="tag is-dark">{this.props.category}</span></span>
+          category && <span> in <span className="tag is-dark">{category}</span></span>
         }
-        . Sort by <a className="button is-small is-text" onClick={this.props.sortByScore}>Score</a>{sorts.field==="SCORE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>} <a className="button is-small is-text" onClick={this.props.sortByDate}>Date</a>{sorts.field==="DATE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>}
+        . Sort by <a className="button is-small is-text" onClick={sortByScore}>Score</a>{sorts.field==="SCORE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>}
+          <a className="button is-small is-text" onClick={sortByDate}>Date</a>{sorts.field==="DATE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>}
         </div>
         <table className="table posts">
           <thead>
@@ -51,7 +52,7 @@ class PostList extends React.Component{
           </thead>
           <tbody>
           {
-            this.props.posts.map((post)=>(
+            posts.map((post)=>(
               <tr key={post.id}>
                 <td><Vote item={post} type="post"/></td>
                 <td><Link to={"/"+post.category+"/"+post.id}>{post.title}</Link></td>
@@ -71,7 +72,7 @@ class PostList extends React.Component{
         <br/>
         <ul className="categories">
         {
-          this.props.categories.map((category)=>(
+          categories.map((category)=>(
             <li key={category.name}><Link to={"/"+category.path} className="tag is-dark">{category.name}</Link></li>
           ))
         }
