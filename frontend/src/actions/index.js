@@ -62,8 +62,8 @@ export function receiveComments(comments){
 export function loadData(){
 	return function(dispatch){
 		API.loadData().then(({categories,posts,comments})=>{
-			dispatch(receiveCategories(categories)),
-			dispatch(receivePosts(posts)),
+			dispatch(receiveCategories(categories))
+			dispatch(receivePosts(posts))
 			dispatch(receiveComments(comments))
 		})
 	}
