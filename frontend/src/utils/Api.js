@@ -1,8 +1,18 @@
 import {config} from "../config.js"
 
-const headers={
-  'Accept': 'application/json',
-  'Authorization': 'udacity'
+export const loadData=()=>{
+  const categoryFetcher=fetch(`${config.API_BASE_URL}/categories`, config.FETCH_INIT_PARAM)
+  const postFetcher=fetch(`${config.API_BASE_URL}/posts`, config.FETCH_INIT_PARAM)
+  const commentsFetcher=fetch(`${config.API_BASE_URL}/comments`, config.FETCH_INIT_PARAM)
+
+  return Promise.all([categoryFetcher,postFetcher,commentsFetcher]).then(responses=>{
+    return Promise.all([responses[0].json(),responses[1].json(),responses[2].json()]).then(values=>{
+      return {
+        categories:values[0].categories,
+        posts:values[1],
+        comments:values[2],
+      }})
+  })
 }
 
 export const fetchPost=(id)=>{
@@ -20,7 +30,7 @@ export const createPost=(post)=>
   fetch(`${config.API_BASE_URL}/posts`, {
     method:"POST",
     headers:{
-      ...headers,
+      ...config.FETCH_INIT_PARAM.headers,
       'Content-Type':"application/json"
     },
     body:JSON.stringify(post)
@@ -29,7 +39,7 @@ export const createPost=(post)=>
 export const updatePost=(id,post)=>fetch(`${config.API_BASE_URL}/posts/${id}`,{
   method:"PUT",
   headers:{
-    ...headers,
+    ...config.FETCH_INIT_PARAM.headers,
     'Content-Type':"application/json"
   },
   body:JSON.stringify(post)
@@ -38,7 +48,7 @@ export const updatePost=(id,post)=>fetch(`${config.API_BASE_URL}/posts/${id}`,{
 export const deletePost=(id)=>fetch(`${config.API_BASE_URL}/posts/${id}`,{
   method:"DELETE",
   headers:{
-    ...headers
+    ...config.FETCH_INIT_PARAM.headers,
   }
 })
 
@@ -46,7 +56,7 @@ export const createComment=(comment)=>
   fetch(`${config.API_BASE_URL}/comments`, {
     method:"POST",
     headers:{
-      ...headers,
+      ...config.FETCH_INIT_PARAM.headers,
       'Content-Type':"application/json"
     },
     body:JSON.stringify(comment)
@@ -55,7 +65,7 @@ export const createComment=(comment)=>
 export const updateComment=(id,comment)=>fetch(`${config.API_BASE_URL}/comments/${id}`,{
   method:"PUT",
   headers:{
-    ...headers,
+    ...config.FETCH_INIT_PARAM.headers,
     'Content-Type':"application/json"
   },
   body:JSON.stringify(comment)
@@ -64,14 +74,14 @@ export const updateComment=(id,comment)=>fetch(`${config.API_BASE_URL}/comments/
 export const deleteComment=(id)=>fetch(`${config.API_BASE_URL}/comments/${id}`,{
   method:"DELETE",
   headers:{
-    ...headers
+    ...config.FETCH_INIT_PARAM.headers,
   }
 }).then(res=>res.json())
 
 export const votePost=(id,up)=>fetch(`${config.API_BASE_URL}/posts/${id}`,{
   method:"POST",
   headers:{
-    ...headers,
+    ...config.FETCH_INIT_PARAM.headers,
     'Content-Type': "application/json"
   },
   body:JSON.stringify({option:up?"upVote":"downVote"})}
@@ -80,7 +90,7 @@ export const votePost=(id,up)=>fetch(`${config.API_BASE_URL}/posts/${id}`,{
 export const voteComment=(id,up)=>fetch(`${config.API_BASE_URL}/comments/${id}`,{
   method:"POST",
   headers:{
-    ...headers,
+    ...config.FETCH_INIT_PARAM.headers,
     'Content-Type': "application/json"
   },
   body:JSON.stringify({option:up?"upVote":"downVote"})}

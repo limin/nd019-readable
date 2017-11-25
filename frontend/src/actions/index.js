@@ -1,5 +1,6 @@
 import * as API from '../utils/Api'
 
+export const RECEIVE_CATEGORIES='RECEIVE_CATEGORIES'
 export const RECEIVE_POSTS='RECEIVE_POSTS'
 export const POST_DELETED='POST_DELETED'
 export const COMMENT_DELETED='COMMENT_DELETED'
@@ -21,6 +22,14 @@ export function sortByScore(){
 		field:SCORE_FIELD
 	}
 }
+
+export function receiveCategories(categories){
+	return {
+    	type: RECEIVE_CATEGORIES,
+    	categories
+    }
+}
+
 
 export function receivePosts(posts){
 	return {
@@ -49,6 +58,17 @@ export function receiveComments(comments){
     	comments
     }
 }
+
+export function loadData(){
+	return function(dispatch){
+		API.loadData().then(({categories,posts,comments})=>{
+			dispatch(receiveCategories(categories)),
+			dispatch(receivePosts(posts)),
+			dispatch(receiveComments(comments))
+		})
+	}
+}
+
 
 export function addPost(post){
 	return function(dispatch){

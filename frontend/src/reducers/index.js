@@ -1,6 +1,7 @@
 import {combineReducers } from 'redux'
 
 import {
+  RECEIVE_CATEGORIES,
   RECEIVE_POSTS,
   POST_DELETED,
   COMMENT_DELETED,
@@ -9,7 +10,18 @@ import {
 } from '../actions'
 
 function categories(state={},action){
-  return state
+  switch (action.type) {
+    case RECEIVE_CATEGORIES:
+      const categories=action.categories
+      const newState=JSON.parse(JSON.stringify(state))
+      categories.forEach(category=>{
+          const newCategory=JSON.parse(JSON.stringify(category))
+          newState[newCategory.path]=newCategory
+      })
+      return newState
+    default:
+      return state
+  }
 }
 
 function posts(state={},action){
