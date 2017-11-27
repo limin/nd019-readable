@@ -7,12 +7,13 @@ const config = require('./config')
 const categories = require('./categories')
 const posts = require('./posts')
 const comments = require('./comments')
+const github = require('./github')
 
 const app = express()
 
 app.use(express.static('public'))
 app.use(cors({
-  //for deve environment in localhost
+  //for dev environment in localhost
   origin: config.origin,
   credentials: true,
 }))
@@ -119,7 +120,7 @@ app.get('/', (req, res) => {
 app.use((req, res, next) => {
   const token = req.get('Authorization')
 
-  if (token) {
+  if (token || req.path==='/github/auth') {
     req.token = token
     next()
   } else {
@@ -129,6 +130,10 @@ app.use((req, res, next) => {
   }
 })
 
+//https://nd019-readable.herokuapp.com/github/auth?code=a3d184f942942e7d798d
+app.get('/github/auth',(req,res)=>{
+    github.auth(req.query.code)
+})
 
 app.get('/categories', (req, res) => {
     categories.getAll(req.token)
