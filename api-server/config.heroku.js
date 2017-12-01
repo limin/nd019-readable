@@ -1,2 +1,2 @@
 exports.port = process.env.PORT
-exports.origin = "https://nd019-readable.herokuapp.com"
+exports.origin = /http(s)?:\/\/nd019-readable\.herokuapp\.com/
