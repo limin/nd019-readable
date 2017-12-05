@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-//import serializeForm from 'form-serialize'
 import {updateComment,fetchComment} from '../actions'
 import {withRouter} from 'react-router';
 import update from 'immutability-helper'
@@ -34,6 +33,7 @@ class UpdateComment extends React.Component{
 //    const values = serializeForm(e.target, { hash: true })
     const {messages,comment}=this.validate()
     if(Object.keys(messages).length===0){
+      comment.timestamp=Date.now()
       this.props.updateComment(this.props.id,comment)
       this.props.history.push(`/${this.props.category}/${this.props.parentId}`)
     }
@@ -46,6 +46,15 @@ class UpdateComment extends React.Component{
 
   render(){
     const {messages, comment}=this.state
+    const {user} = this.props
+    if(!(user && user.id===comment.author.id && user.provider===comment.author.provider)){
+      return (
+        <div>
+        Not authorized.
+        </div>
+      )
+    }
+
     return(
       <div>
       	<h2 className="title">Update comment</h2>
@@ -76,9 +85,10 @@ class UpdateComment extends React.Component{
   }
 }
 
-function mapStateToProps({comments},{id}){
+function mapStateToProps({user, comments},{id}){
   return{
-    comment:Object.values(comments).filter(comment=>comment.id===id)[0]
+    comment:Object.values(comments).filter(comment=>comment.id===id)[0],
+    user
   }
 }
 function mapDispatchToProps(dispatch){

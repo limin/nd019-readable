@@ -165,3 +165,12 @@ ul.comments{
 ul.comments li{
   padding:3px;
 }
+
+.login p{
+  display:flex;
+  justify-content: center;
+}
+
+.fa-5{
+  font-size: 2em
+}

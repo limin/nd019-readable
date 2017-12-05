@@ -26,7 +26,7 @@ class PostList extends React.Component{
     })
   }
   render(){
-    const {posts,sorts,category,categories,sortByScore,sortByDate}=this.props
+    const {user, posts,sorts,category,categories,sortByScore,sortByDate}=this.props
     return (
       <div className="postList">
         <div>
@@ -34,18 +34,16 @@ class PostList extends React.Component{
         {
           category && <span> in <span className="tag is-dark">{category}</span></span>
         }
-        . Sort by <a className="button is-small is-text" onClick={sortByScore}>Score</a>{sorts.field==="SCORE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>}
-          <a className="button is-small is-text" onClick={sortByDate}>Date</a>{sorts.field==="DATE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>}
         </div>
         <table className="table posts">
           <thead>
             <tr>
-              <th>Score</th>
+              <th><a className="button is-small is-text" onClick={sortByScore}>Score</a>{sorts.field==="SCORE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>}</th>
               <th>Title</th>
               <th>Comments</th>
               <th>Author</th>
               <th>Category</th>
-              <th>Time</th>
+              <th><a className="button is-small is-text" onClick={sortByDate}>Date</a>{sorts.field==="DATE" && <i className={sorts.ascending?"fa fa-arrow-up":"fa fa-arrow-down"} aria-hidden="true"></i>}</th>
               <th>Update</th>
               <th>Delete</th>
             </tr>
@@ -57,13 +55,13 @@ class PostList extends React.Component{
                 <td><Vote item={post} type="post"/></td>
                 <td><Link to={"/"+post.category+"/"+post.id}>{post.title}</Link></td>
                 <td className="center">{post.comments.length}</td>
-                <td className="center">{post.author}</td>
+                <td className="center">{post.author.name}</td>
                 <td className="center"><Link to={"/"+post.category} className="button is-text">{post.category}</Link></td>
                 <td>
                   <Moment format={MOMENT_FORMAT}>{new Date(post.timestamp)}</Moment>
                 </td>
-                <td><Link className="button is-text" to={"/update/post/"+post.id}>Update</Link></td>
-                <td><a className="button" onClick={()=>this.onDeleteClick(post)}>Delete</a></td>
+                <td>{ user && user.id===post.author.id && user.provider===post.author.provider && <Link className="button is-text" to={"/update/post/"+post.id}>Update</Link>}</td>
+                <td>{ user && user.id===post.author.id && user.provider===post.author.provider && <a className="button" onClick={()=>this.onDeleteClick(post)}>Delete</a>}</td>
               </tr>
             ))
           }
@@ -92,7 +90,7 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-function mapStateToProps({categories,posts,comments,sorts},{category}){
+function mapStateToProps({user, categories,posts,comments,sorts},{category}){
   const postList=category?getDerivedPosts({posts,comments}).filter((post)=>post.category===category):getDerivedPosts({posts,comments})
 
   switch (sorts.field) {
@@ -112,6 +110,7 @@ function mapStateToProps({categories,posts,comments,sorts},{category}){
 
   }
   return {
+    user,
     categories:Object.values(categories),
     posts:postList,
     sorts

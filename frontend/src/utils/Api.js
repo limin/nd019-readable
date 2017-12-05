@@ -26,6 +26,22 @@ export const fetchPost=(id)=>{
 export const fetchComment=(id)=>
   fetch(`${config.API_BASE_URL}/comments/${id}`,config.FETCH_INIT_PARAM).then(res=>res.json())
 
+export const fetchUser=(token)=>{
+  return fetch(`${config.API_BASE_URL}/me`,{
+      headers:{
+        ...config.FETCH_INIT_PARAM,
+        'Authorization':token
+      }
+  }).then(
+    res=>{
+      const user=res.json()
+      return user
+    }
+  )
+}
+
+
+
 export const createPost=(post)=>
   fetch(`${config.API_BASE_URL}/posts`, {
     method:"POST",

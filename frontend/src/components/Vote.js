@@ -1,19 +1,31 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {withRouter} from 'react-router'
 import {votePost,voteComment} from '../actions'
 
 class Vote extends React.Component{
   up=e=>{
     e.preventDefault()
-    this.props.up()
+    const {user}=this.props
+    if(user && user.id){
+      this.props.up()
+    }else{
+      this.props.history.push("/a/b/login")
+    }
   }
 
   down=e=>{
     e.preventDefault()
-    this.props.down()
+    const {user}=this.props
+    if(user && user.id){
+      this.props.down()
+    }else{
+      this.props.history.push("/a/b/login")
+    }
+
   }
   render(){
-    let item=this.props.item
+    const {item}=this.props
     return (
       <div className="vote">
         <div className="up button" onClick={this.up}>Up</div>
@@ -31,4 +43,10 @@ function mapDispatchToProps(dispatch,ownProps){
   }
 }
 
-export default connect(null,mapDispatchToProps)(Vote)
+function mapStateToProps({user}){
+  return {
+    user
+  }
+}
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Vote))

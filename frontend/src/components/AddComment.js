@@ -1,5 +1,4 @@
 import React from 'react'
-//import serializeForm from 'form-serialize'
 import {uniqueId} from '../utils'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
@@ -11,18 +10,19 @@ class AddComment extends React.Component{
     messages:{},
     comment:{
       body:"",
-      author:""
+      author:{name:""}
     }
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    //const values = serializeForm(e.target, { hash: true })
     const {messages,comment}=this.validate()
+    const {id,provider,name}=this.props.user
     if(Object.keys(messages).length===0){
       comment.id=uniqueId()
       comment.parentId=this.props.parentId
       comment.timestamp=Date.now()
+      comment.author={id,provider,name}
       this.props.addComment(comment)
       this.props.history.push(`/${this.props.category}/${this.props.parentId}`)
     }
@@ -35,10 +35,12 @@ class AddComment extends React.Component{
     if(comment.body.length===0){
       messages["body"]="Body is invalid."
     }
+    /*
     comment.author=comment.author.trim()
     if(comment.author.length===0){
       messages["author"]="Author is invalid."
     }
+    */
     const newState=update(this.state,{
       comment:{$set:comment},
       messages:{$set:messages}
@@ -48,7 +50,14 @@ class AddComment extends React.Component{
   }
 
   render(){
-    const {messages,comment}=this.state
+    const { messages, comment}=this.state
+    const {user}=this.props
+    if(!(user && user.name)){
+      this.props.history.push("/a/b/login")
+      return (
+        <div>Loading...</div>
+      )
+    }
     return (
       <div>
         <h2 className="title">Add Comment</h2>
@@ -71,7 +80,7 @@ class AddComment extends React.Component{
         <div className="field">
           <label className="label">Author</label>
           <div className={messages.hasOwnProperty("author")?"control has-icons-right":"control"}>
-            <input className={messages.hasOwnProperty("author")?"input is-danger":"input"} name="author" value={comment.author} type="text" placeholder="author"  onChange={(e)=>this.setState(update(this.state,{comment:{author:{$set:e.target.value}}}))}/>
+            <input className={messages.hasOwnProperty("author")?"input is-danger":"input"} name="author" value={user.name} type="text" placeholder="author" readonly/>
             {
               messages.hasOwnProperty("author") &&
                 <span className="icon is-small is-right">
@@ -100,4 +109,10 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-export default withRouter(connect(null,mapDispatchToProps)(AddComment))
+function mapStateToProps({user}){
+  return {
+    user
+  }
+}
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(AddComment))

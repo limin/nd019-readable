@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-//import serializeForm from 'form-serialize'
 import {updatePost,fetchPost} from '../actions'
 import {withRouter} from 'react-router';
 import update from 'immutability-helper'
@@ -38,6 +37,7 @@ class UpdatePost extends React.Component{
     //const values = serializeForm(e.target, { hash: true })
     const {messages,post}=this.validate()
     if(Object.keys(messages).length===0){
+      post.timestamp=Date.now()
       this.props.updatePost(this.props.id,post)
       this.props.history.push("/")
     }
@@ -49,6 +49,7 @@ class UpdatePost extends React.Component{
 
   render(){
     const {messages,post}=this.state
+    const {user} = this.props
     if(post==null || post.deleted===true){
       return (
           <div>
@@ -56,7 +57,13 @@ class UpdatePost extends React.Component{
           </div>
       )
     }
-
+    if(!(user && user.id===post.author.id && user.provider===post.author.provider)){
+      return (
+        <div>
+        Not authorized.
+        </div>
+      )
+    }
     return(
       <div>
       	<h2 className="title">Update post</h2>
@@ -102,10 +109,11 @@ class UpdatePost extends React.Component{
   }
 }
 
-function mapStateToProps({categories,posts},{id}){
+function mapStateToProps({categories,posts,user},{id}){
   return{
     categories: Object.values(categories),
-    post:Object.values(posts).filter(post=>post.id===id)[0]
+    post:Object.values(posts).filter(post=>post.id===id)[0],
+    user
   }
 }
 function mapDispatchToProps(dispatch){

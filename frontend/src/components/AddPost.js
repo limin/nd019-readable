@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router';
-//import serializeForm from 'form-serialize'
 import {uniqueId} from '../utils'
 import {addPost} from '../actions'
 
@@ -13,7 +12,7 @@ class AddPost extends React.Component{
     post:{
       title:"",
       body:"",
-      author:"",
+      author:{name:""},
       category:""
     }
   }
@@ -22,10 +21,12 @@ class AddPost extends React.Component{
     e.preventDefault()
     //const values = serializeForm(e.target, { hash: true })
     const {messages,post}=this.validate()
+    const {id, provider, name}=this.props.user
     if(Object.keys(messages).length===0){
       post.id=uniqueId()
       post.timestamp=Date.now()
       post.deleted=false
+      post.author={id,provider,name}
       this.props.addPost(post)
       this.props.history.push("/")
     }
@@ -42,10 +43,12 @@ class AddPost extends React.Component{
     if(post.body.length===0){
       messages["body"]="Body is invalid."
     }
+    /*
     post.author=post.author.trim()
     if(post.author.length===0){
       messages["author"]="Author is invalid."
     }
+    */
     post.category=post.category.trim()
     if(post.category.length===0){
       messages["category"]="Category is invalid."
@@ -60,6 +63,13 @@ class AddPost extends React.Component{
 
   render(){
     const {messages,post}=this.state
+    const {user}=this.props
+    if(!(user && user.name)){
+      this.props.history.push("/a/b/login")
+      return (
+        <div>Loading...</div>
+      )
+    }
     return(
       <div>
       	<h2 className="title">Add post</h2>
@@ -97,7 +107,7 @@ class AddPost extends React.Component{
         <div className="field">
           <label className="label">Author</label>
           <div className={messages.hasOwnProperty("author")?"control has-icons-right":"control"}>
-            <input className={messages.hasOwnProperty("author")?"input is-danger":"input"} name="author" value={post.author} type="text" placeholder="author"  onChange={(e)=>this.setState(update(this.state,{post:{author:{$set:e.target.value}}}))}/>
+            <input className={messages.hasOwnProperty("author")?"input is-danger":"input"} name="author" value={user.name} type="text" placeholder="author" readonly/>
             {
               messages.hasOwnProperty("author") &&
                 <span className="icon is-small is-right">
@@ -138,9 +148,10 @@ class AddPost extends React.Component{
   }
 }
 
-function mapStateToProps({categories}){
+function mapStateToProps({user,categories}){
   return{
-    categories: Object.values(categories)
+    categories: Object.values(categories),
+    user
   }
 }
 

@@ -3,6 +3,7 @@ import {combineReducers } from 'redux'
 import {
   RECEIVE_CATEGORIES,
   RECEIVE_POSTS,
+  RECEIVE_USER,
   POST_DELETED,
   COMMENT_DELETED,
   RECEIVE_COMMENTS,
@@ -76,6 +77,18 @@ function comments(state={},action){
   }
 }
 
+function user(state={},action){
+  switch (action.type) {
+    case RECEIVE_USER:
+      return{
+        ...action.user
+      }
+    default:
+      return state
+  }
+}
+
+
 function sorts(state={"field":"SCORE","ascending":false},action){
   switch (action.type) {
     case SORT_POSTS:
@@ -88,4 +101,4 @@ function sorts(state={"field":"SCORE","ascending":false},action){
   }
 }
 
-export default combineReducers({categories,posts,comments,sorts,})
+export default combineReducers({categories,posts,comments,sorts,user,})

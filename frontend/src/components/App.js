@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 import {BrowserRouter,Route, Link} from 'react-router-dom'
+import {receiveUser} from '../actions'
 import PostList from '../components/PostList'
 import Post from '../components/Post'
+import Login from '../components/Login'
 import AddPost from '../components/AddPost'
 import AddComment from '../components/AddComment'
 import UpdatePost from '../components/UpdatePost'
@@ -13,6 +16,7 @@ import '../bulma.css';
 
 class App extends Component {
   render() {
+    const {user}=this.props
     return (
       <BrowserRouter>
         <div className="app">
@@ -23,6 +27,8 @@ class App extends Component {
         		<ul className="app-nav-bar">
         			<li><Link className="button is-primary is-outlined" to="/">Posts</Link></li>
       				<li><Link className="button is-primary is-outlined" to="/add/post/0">Add Post</Link></li>
+              {!(user && user.name) && <li><Link className="button is-primary is-outlined" to="/a/b/login">Login</Link></li>}
+              {user && user.name && <li><a className="button is-primary is-outlined" onClick={this.props.logout}>Logout({user.name})</a></li>}
         		</ul>
             <div className="fork">
               {// from: https://github.com/blog/273-github-ribbons
@@ -36,6 +42,12 @@ class App extends Component {
                 <PostList/>
               </div>
             }/>
+            <Route exact path="/a/b/login/:token?" render={({ match })=>
+              <div>
+                <Login token={match.params.token}/>
+              </div>
+            }/>
+
             <Route exact path="/:category" render={({ match })=>
               <div>
                 <PostList category={match.params.category}/>
@@ -43,7 +55,7 @@ class App extends Component {
             }/>
 
       		  <Route exact path="/add/post/0" render={()=>
-      			<AddPost/>
+      			     <AddPost/>
       		  }/>
 
             <Route exact path="/update/post/:id" render={({match})=>
@@ -69,4 +81,15 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps({user}){
+  return {
+    user
+  }
+}
+function mapDispatchToProps(dispatch){
+  return {
+    logout: ()=>dispatch(receiveUser(null))
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);

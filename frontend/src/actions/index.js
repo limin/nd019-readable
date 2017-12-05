@@ -2,6 +2,7 @@ import * as API from '../utils/Api'
 
 export const RECEIVE_CATEGORIES='RECEIVE_CATEGORIES'
 export const RECEIVE_POSTS='RECEIVE_POSTS'
+export const RECEIVE_USER='RECEIVE_USER'
 export const POST_DELETED='POST_DELETED'
 export const COMMENT_DELETED='COMMENT_DELETED'
 export const RECEIVE_COMMENTS='RECEIVE_COMMENTS'
@@ -35,6 +36,13 @@ export function receivePosts(posts){
 	return {
     	type: RECEIVE_POSTS,
     	posts
+    }
+}
+
+export function receiveUser(user){
+	return {
+    	type: RECEIVE_USER,
+    	user
     }
 }
 
@@ -89,6 +97,15 @@ export function fetchPost(id){
 			dispatch(receivePosts([values[0]]))
 			dispatch(receiveComments(values[1]))
 			})
+	  }
+}
+
+export function fetchUser(token){
+  return function(dispatch){
+//  	dispatch(requestPost(id))
+		API.fetchUser(token).then(user=>
+			dispatch(receiveUser(user))
+			)
 	  }
 }
 
