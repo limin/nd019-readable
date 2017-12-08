@@ -22,7 +22,7 @@ function getAccessToken(code){
     'client_secret': config.GITHUB_CLIENT_SECRET,
     'code': code
   })
-  console.log('post data:',data)
+  //console.log('post data:',data)
   const options = {
     hostname: 'github.com',
     port: 443,
@@ -77,7 +77,7 @@ function getUser(token){
       'User-Agent':GITHUB_APP_NAME
     }
   }
-  console.log('getUser options:',options)
+  //console.log('getUser options:',options)
   return new Promise((resolve,reject)=>{
     https.get(options,(res)=>{
       //console.log('statusCode:', res.statusCode)
