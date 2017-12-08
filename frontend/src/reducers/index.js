@@ -10,6 +10,15 @@ import {
   SORT_POSTS,
 } from '../actions'
 
+const USER_KEY="user"
+let USER={}
+try{
+  USER=JSON.parse(sessionStorage.getItem(USER_KEY))
+}catch(err){
+  console.log(err)
+}
+
+
 function categories(state={},action){
   switch (action.type) {
     case RECEIVE_CATEGORIES:
@@ -77,9 +86,10 @@ function comments(state={},action){
   }
 }
 
-function user(state={},action){
+function user(state=USER,action){
   switch (action.type) {
     case RECEIVE_USER:
+      sessionStorage.setItem(USER_KEY,JSON.stringify(action.user));
       return{
         ...action.user
       }
