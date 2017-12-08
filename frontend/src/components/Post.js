@@ -62,7 +62,7 @@ class Post extends React.Component{
           </div>
         </div>
         <div className="comments">
-          <div><span>{post.comments.length} comments.</span> {user && user.id===post.author.id && user.provider===post.author.provider && <Link className="button is-text is-small" to={"/add/comment/"+post.category+"/"+post.id}>Add Comment</Link>}</div>
+          <div><span>{post.comments.length} comments.</span> <Link className="button is-text is-small" to={"/add/comment/"+post.category+"/"+post.id}>Add Comment</Link></div>
           <ul className="comments">
           {
             post.comments.map((comment)=>(
