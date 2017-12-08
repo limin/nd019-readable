@@ -1,6 +1,7 @@
 const Datastore=require('nedb')
+const config=require('./config')
 const db={}
-db.users=new Datastore({filename:"./db/users.db",autoload:true})
+db.users=new Datastore({filename:`${config.DB_PATH}/users.db`,autoload:true})
 
 /**
 {
