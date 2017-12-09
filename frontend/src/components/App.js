@@ -10,9 +10,9 @@ import AddComment from '../components/AddComment'
 import UpdatePost from '../components/UpdatePost'
 import UpdateComment from '../components/UpdateComment'
 
-import logo from '../logo.svg';
-import '../App.css';
-import '../bulma.css';
+import logo from '../logo.svg'
+import '../App.css'
+import '../../node_modules/bulma/css/bulma.css'
 
 class App extends Component {
   render() {
